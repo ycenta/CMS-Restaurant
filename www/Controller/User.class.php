@@ -5,6 +5,7 @@ use App\Core\CleanWords;
 use App\Core\Sql;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Core\Auth;
 use App\Model\User as UserModel;
 
 class User {
@@ -16,6 +17,9 @@ class User {
         $view->assign("pseudo", "Prof");
         $view->assign("firstname", "Yves");
         $view->assign("lastname", "Skrzypczyk");
+
+        $auth = new Auth();
+        echo $auth->generateToken();
 
     }
 
