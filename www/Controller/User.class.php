@@ -22,18 +22,23 @@ class User {
 
     public function register()
     {
+      $view = new View("register");
+      $user = new UserModel();
+      $view->assign("user", $user);
 
-        $user = new UserModel();
+
 
         if( !empty($_POST)){
 
             $result = Verificator::checkForm($user->getRegisterForm(), $_POST);
             print_r($result);
+            $user->setUser();
+            $user->save();
+
 
         }
 
-        $view = new View("register");
-        $view->assign("user", $user);
+
     }
 
 
@@ -49,8 +54,3 @@ class User {
     }
 
 }
-
-
-
-
-
