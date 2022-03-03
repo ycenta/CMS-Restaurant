@@ -35,10 +35,10 @@ class Verificator
             if(!empty($input["confirm"]) && $data[$name] != $data[$input["confirm"]]){
                 $result[] = $input["error"];
             }
-
-            if(!empty($input["email"]) = $data[$email]){
-                $result[] = $input["error"];
-            }
+//pas sur de ça
+            //if(!empty($input["email"]) == $data[$name]){
+                //$result[] = $input["error"];
+            //}
 
         }
 

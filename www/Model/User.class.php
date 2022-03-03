@@ -222,11 +222,12 @@ $this->setPassword($_POST["password"]) ;
 if (password_verify($_POST["passwordConfirm"] , $this->password)) {
   echo "true";
   return true;
+}
   else {
     echo "mots de passe differents";
     return false;
   }
-}
+
 $this->setStatus(0) ;
 $this->generateToken() ;
 
