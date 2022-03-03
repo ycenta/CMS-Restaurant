@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Core\CleanWords;
 use App\Core\Sql;
+use App\Core\Mailsender;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Model\User as UserModel;
@@ -30,6 +31,8 @@ class User {
             $result = Verificator::checkForm($user->getRegisterForm(), $_POST);
             print_r($result);
 
+            print_r($_POST);
+        
         }
 
         $view = new View("register");
@@ -46,6 +49,16 @@ class User {
     public function pwdforget()
     {
         echo "Mot de passe oublié";
+    }
+
+    public function sendmail()
+    {
+        echo "page d'envoi mail<br>";
+
+        $data= [ "toMail" => "adressemail","fromMail" => "adressemail", "subject" => 'test subject encore ', "body" => 'test body mail'];
+        Mailsender::sendCustomMail($data);
+        
+
     }
 
 }
