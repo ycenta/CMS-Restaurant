@@ -36,6 +36,9 @@ class Verificator
                 $result[] = $input["error"];
             }
 
+            if(!empty($input["email"]) = $data[$email]){
+                $result[] = $input["error"];
+            }
 
         }
 
