@@ -58,5 +58,16 @@ abstract class Sql
 
     }
 
-
+    public function login($email) {
+        
+        $sql = "SELECT * FROM esgi_user where email=?";
+        $result = $this->pdo->prepare($sql);
+        $result->execute(array($email));
+        
+        // if ($result->rowCount() > 0) {
+            
+        
+        $data = $result->fetch();
+        return $data;
+    }
 }

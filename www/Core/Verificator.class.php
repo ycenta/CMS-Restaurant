@@ -60,7 +60,20 @@ class Verificator
             ;
     }
 
-
+    public function check($email, $password){
+            
+        // Verif si des valeurs --> bien envoyé
+        $email = $_POST['email'];
+        $pass = $_POST['password'];
+        
+        if (password_verify($data['password'], $pass)) {
+            echo "Connexion effectuée GG MAN";
+            $_SESSION['email'] = $email;
+        }else {
+            echo "Tu es inconnu au bataillon";
+            return false;
+        }
+    }    
 
 
 }

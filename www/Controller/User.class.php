@@ -11,12 +11,15 @@ class User {
 
     public function login()
     {
-        $view = new View("Login", "back");
+        $user = new UserModel();
+        $view = new View("Login");
+        $view->assign("user", $user);
+        if( !empty($_POST)){
+            $user->setlogin($_POST['email'],$_POST['password']);
 
-        $view->assign("pseudo", "Prof");
-        $view->assign("firstname", "Yves");
-        $view->assign("lastname", "Skrzypczyk");
-
+        }
+        
+    
     }
 
 

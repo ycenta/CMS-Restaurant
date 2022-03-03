@@ -76,6 +76,12 @@ class User extends Sql
     {
         $this->email = strtolower(trim($email));
     }
+    public function setLogin($email, $password)
+    {
+        $this->setEmail($email);
+        $this->setPassword($password);
+    }
+
 
     /**
      * @return string
