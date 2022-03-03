@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Core\CleanWords;
 use App\Core\Sql;
+use App\Core\Mailsender;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Model\User as UserModel;
@@ -43,6 +44,8 @@ class User {
 
 
 
+            print_r($_POST);
+        
         }
 
 
@@ -58,6 +61,16 @@ class User {
     public function pwdforget()
     {
         echo "Mot de passe oublié";
+    }
+
+    public function sendmail()
+    {
+        echo "page d'envoi mail<br>";
+
+        $data= [ "toMail" => "adressemail","fromMail" => "adressemail", "subject" => 'test subject encore ', "body" => 'test body mail'];
+        Mailsender::sendCustomMail($data);
+        
+
     }
 
 }
