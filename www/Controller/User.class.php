@@ -56,8 +56,9 @@ class User {
         echo "page d'envoi mail<br>";
 
         $data= [ "toMail" => "adressemail","fromMail" => "adressemail", "subject" => 'test subject encore ', "body" => 'test body mail'];
-        Mailsender::sendCustomMail($data);
         
+        $mailtest = new Mailsender();
+        $mailtest->registerMail("yohan.centa@gmail.com","yohan","https://google.com");
 
     }
 
