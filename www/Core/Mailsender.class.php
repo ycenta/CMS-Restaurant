@@ -39,8 +39,13 @@ class Mailsender
             $this->mail->isHTML(true);      
             
             $this->mail->Subject = "Confirmation Inscription NomDuSite";
-            $this->mail->Body = "<h1>Bienvenue $name !</h1><p>Veuillez confirmer votre inscription en cliquant sur le lien <span>$url</span> </p>";
 
+            ob_start();
+            include "View/Template/Mail/register.mail.php";
+            $template = ob_get_clean();
+
+
+            $this->mail->Body = $template;
             $this->mail->send();
             echo 'Message Register has been sent';
         } catch (Exception $e) {
@@ -68,33 +73,52 @@ class Mailsender
         
     }
 
-    public function sendCustomMail($email,$name, $data) 
+    public function includeMailTemplate($template, $variables):void
+    {
+        if(!file_exists("View/Template/Mail/".$template.".mail.php")){
+            die("Le partial ".$template." n'existe pas");
+        }
+        include "View/Template/Mail/".$template.".mail.php";
+    }
+
+
+    public function sendCustomMail($template, $email, $name, $url = null, $data = null) 
     {
 
         try {
            
-            //From-to-type
-            $this->mail->setFrom($this->mailusername);
             $this->mail->addAddress($email);      
             $this->mail->isHTML(true);      
             
-            //Contenu du mail
+            if($template == 'register'){
+                $this->mail->Subject = "Confirmation Inscription NomDuSite";
+            }else{
+                $this->mail->Subject = "NomDuSite";
+            }
 
-                // mail->Subject = 'sujet mail';
-                // mail->Body    = 'Je suis un mail bonjour<b>in bold!</b>';
-                // mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            $variables = [];
+            $variables['email'] = $email;
+            $variables['name'] = $name;
+            $variables['url'] = $url;
+            $variables['data'] = $data;
 
-            $this->mail->Subject = $data['subject'];
-            $this->mail->Body = $data['body'];
+            ob_start();
+            $this->includeMailTemplate($template, $variables);
+            $template = ob_get_clean();
 
+            $this->mail->Body = $template;
             $this->mail->send();
-            echo 'Message has been sent';
+
+            echo 'Message Register has been sent';
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {mail->ErrorInfo}";
         }
 
 
     }
+
+
+   
 
 
 }

@@ -66,11 +66,9 @@ class User {
     public function sendmail()
     {
         echo "page d'envoi mail<br>";
-
-        $data= [ "toMail" => "adressemail","fromMail" => "adressemail", "subject" => 'test subject encore ', "body" => 'test body mail'];
         
         $mailtest = new Mailsender();
-        $mailtest->registerMail("yohan.centa@gmail.com","yohan","https://google.com");
+        $mailtest->sendCustomMail('register',"test@localhost","yohan","https://google.com");
 
     }
 
