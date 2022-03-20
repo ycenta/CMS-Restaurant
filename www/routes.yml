@@ -1,26 +1,38 @@
 /:
   controller: main
   action: home
+  security:
+    - none
 
 /contact:
   controller: main
   action: contact
+  security:
+    - none
 
 /login:
   controller: user
   action: login
+  security:
+    - none
 
 /logout:
   controller: user
   action: logout
+  security:
+    - none
 
 /register:
   controller: user
   action: register
+  security:
+    - none
 
 /forget:
   controller: user
   action: pwdforget
+  security:
+    - none
 
 
 /dashboard:

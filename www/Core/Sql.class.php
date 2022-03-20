@@ -58,5 +58,20 @@ abstract class Sql
 
     }
 
+    public function auth($id, $token)
+    {
+        $sql = "SELECT token FROM esgi_user WHERE id=".$id;
+        $query = $this->pdo->query($sql);
+        $row = $query->fetch();
+
+        print_r($row);
+        if($row['token']==$token){
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+
 
 }

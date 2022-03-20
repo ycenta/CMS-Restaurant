@@ -212,5 +212,10 @@ class User extends Sql
         ];
     }
 
+    public function authentification($id, $token)
+    {
+        return parent::auth($id, $token);
+    }
+
 
 }

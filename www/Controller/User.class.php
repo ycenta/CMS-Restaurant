@@ -17,6 +17,10 @@ class User {
         $view->assign("firstname", "Yves");
         $view->assign("lastname", "Skrzypczyk");
 
+        $_SESSION['id'] = 1;
+        $_SESSION['token'] = 'coucou';
+        $_SESSION['security'] = 'admin';
+
     }
 
 
@@ -40,6 +44,7 @@ class User {
     public function logout()
     {
         echo "Se déco";
+        session_destroy();
     }
 
 
