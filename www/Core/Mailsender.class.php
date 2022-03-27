@@ -31,48 +31,6 @@ class Mailsender
             
     }
 
-    public function sendRegisterMail($email,$name,$url){
-
-        try {
-           
-            $this->mail->addAddress($email);      
-            $this->mail->isHTML(true);      
-            
-            $this->mail->Subject = "Confirmation Inscription NomDuSite";
-
-            ob_start();
-            include "View/Template/Mail/register.mail.php";
-            $template = ob_get_clean();
-
-
-            $this->mail->Body = $template;
-            $this->mail->send();
-            echo 'Message Register has been sent';
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {mail->ErrorInfo}";
-        }
-        
-    }
-
-
-    public function sendForgotMail($email,$name,$url){
-
-        try {
-           
-            $this->mail->addAddress($email);      
-            $this->mail->isHTML(true);      
-            
-            $this->mail->Subject = "Changement de mot de passe";
-            $this->mail->Body = "<h1>Bonjour $name !</h1><p>Veuillez cliquer sur le lien pour reintinialiser votre mot de passe <span>$url</span> </p>";
-
-            $this->mail->send();
-            echo 'Message Forgot has been sent';
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {mail->ErrorInfo}";
-        }
-        
-    }
-
     public function includeMailTemplate($template, $variables):void
     {
         if(!file_exists("View/Template/Mail/".$template.".mail.php")){
@@ -82,7 +40,7 @@ class Mailsender
     }
 
 
-    public function sendCustomMail($template, $email, $name, $url = null, $data = null) 
+    public function sendMail($template, $email, $name, $url = null, $data = null) 
     {
 
         try {
@@ -109,7 +67,7 @@ class Mailsender
             $this->mail->Body = $template;
             $this->mail->send();
 
-            echo 'Message Register has been sent';
+            echo 'Message has been sent';
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {mail->ErrorInfo}";
         }
