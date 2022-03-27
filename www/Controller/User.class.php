@@ -68,7 +68,8 @@ class User {
         echo "page d'envoi mail<br>";
         
         $mailtest = new Mailsender();
-        $mailtest->sendCustomMail('register',"test@localhost","yohan","https://google.com");
+        $mailtest->sendMail('register',"yohan@mailexemple.com","yohan","https://google.com");
+        // sendMail($template, $email, $name, $url = null, $data = null) 
 
     }
 
