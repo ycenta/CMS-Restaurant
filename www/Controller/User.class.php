@@ -37,6 +37,9 @@ class User {
             if (empty($result)) {
               $user->setUser();
               $user->save();
+
+              $mailtest = new Mailsender();
+              $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/register?activation=".$user->getToken());
             }
             else {
               echo "Erreur";
