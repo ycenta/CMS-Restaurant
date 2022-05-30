@@ -213,25 +213,25 @@ class User extends Sql
     }
 
 
- public function setUser(){
+    public function setUser(){
 
-$this->setFirstname($_POST["firstname"]) ;
-$this->setLastname($_POST["lastname"]) ;
-$this->setEmail($_POST["email"]) ;
-$this->setPassword($_POST["password"]) ;
-if (password_verify($_POST["passwordConfirm"] , $this->password)) {
-  echo "true";
-  return true;
-}
-  else {
-    echo "mots de passe differents";
-    return false;
-  }
+        $this->setFirstname($_POST["firstname"]) ;
+        $this->setLastname($_POST["lastname"]) ;
+        $this->setEmail($_POST["email"]) ;
+        $this->setPassword($_POST["password"]) ;
+        $this->setStatus(0) ;
+        $this->generateToken() ;
 
-$this->setStatus(0) ;
-$this->generateToken() ;
+        if (password_verify($_POST["passwordConfirm"] , $this->password)) {
+            echo "true";
+            return true;
+        }
+        else {
+            echo "mots de passe differents";
+            return false;
+        }
 
- }
+    }
 
 
 }
