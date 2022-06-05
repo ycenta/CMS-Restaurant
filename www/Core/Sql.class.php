@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Core;
+use App\Core\QueryBuilder;
+
+
 
 abstract class Sql
 {
@@ -53,10 +56,32 @@ abstract class Sql
 
         }
 
-        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared = $this->pdo->query($sql);
         $queryPrepared->execute( $columns );
 
     }
+
+
+    public function findByCustom(string $column,string $value)
+    {
+        $queryBuilder = new QueryBuilder();
+        $sql = $queryBuilder
+            ->select($this->table, ['*'])
+            ->where($column, $value)
+            ->limit(0, 1)
+            ->getQuery();
+
+            $query = $this->pdo->query($sql);
+            return $query->fetchObject(get_called_class());
+      
+    }
+
+
+//    public function findByMultipleCustom(string $column, $value)
+//    {
+
+//    }
+
 
 
 }

@@ -83,7 +83,7 @@
 
         public function where(string $column, string $value, string $operator = "="): QueryBuilder
         {
-            $this->query->where[] = $column . $operator . $value;
+            $this->query->where[] = $column . $operator .'"'.$value.'"';
             return $this;
         }
 

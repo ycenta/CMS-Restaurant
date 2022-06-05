@@ -6,17 +6,49 @@ use App\Core\Sql;
 use App\Core\Mailsender;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Core\Auth;
 use App\Model\User as UserModel;
 
 class User {
 
+    public function __construct()
+    {
+        Auth::check();
+    }
+
     public function login()
     {
-        $view = new View("Login", "back");
+        $user = new UserModel();
+        $view = new View("Login");
 
-        $view->assign("pseudo", "Prof");
-        $view->assign("firstname", "Yves");
-        $view->assign("lastname", "Skrzypczyk");
+        $view->assign("user", $user);
+        if(!empty($_POST)){
+            $result = Verificator::checkForm($user->getLoginForm(), $_POST);
+
+            if(empty($result)){ // Si pas d'erreur
+                $emailToCheck = $_POST['email'];
+                $passwordToCheck = $_POST['password'];
+
+                $user = $user->checkLogin($emailToCheck,$passwordToCheck); //On check la paire mail/password
+                if($user){ // Si un utilisateur est renvoyé, on crée la session
+                    echo "sucess";
+                    $_SESSION['auth'] = $user->getId();
+                    $_SESSION['email'] = $emailToCheck;
+                    header('Location: http://localhost');
+                }else{
+                    echo "Identifiant ou mot de passe incorrect";
+                }
+                
+            }else{
+                echo implode("<br>",$result);
+            }
+
+           
+        }     
+
+        // $view->assign("pseudo", "Prof");
+        // $view->assign("firstname", "Yves");
+        // $view->assign("lastname", "Skrzypczyk");
 
     }
 
@@ -27,8 +59,6 @@ class User {
       $view = new View("register");
 
       $view->assign("user", $user);
-
-
 
         if( !empty($_POST)){
 
@@ -44,10 +74,6 @@ class User {
             else {
               echo "Erreur";
             }
-
-
-
-            print_r($_POST);
         
         }
 

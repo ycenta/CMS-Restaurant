@@ -28,9 +28,12 @@ class Verificator
                 $result[] = $input["error"];
             }
 
-            if($input["type"] == "password" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
-                $result[] = $input["error"];
+            if(isset($input["confirm"])){
+                if($input["type"] == "password" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
+                    $result[] = $input["error"];
+                }
             }
+           
 
             if(!empty($input["confirm"]) && $data[$name] != $data[$input["confirm"]]){
                 $result[] = $input["error"];
