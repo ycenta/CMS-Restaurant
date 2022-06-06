@@ -21,7 +21,7 @@ class User {
         $user = new UserModel();
         $view = new View("Login");
 
-        $view->assign("user", $user);
+        
         if(!empty($_POST)){
             $result = Verificator::checkForm($user->getLoginForm(), $_POST);
 
@@ -33,22 +33,21 @@ class User {
                 if($user){ // Si un utilisateur est renvoyé, on crée la session
                     echo "sucess";
                     $_SESSION['auth'] = $user->getId();
-                    $_SESSION['email'] = $emailToCheck;
+                    $_SESSION['email'] = $user->getEmail();
+                    $_SESSION['firstname'] = $user->getFirstname();
+
+                    $view->assign("firstname",  $_SESSION['firstname']);
+                    // $view->assign("lastname", "Skrzypczyk");
                     header('Location: http://localhost');
                 }else{
                     echo "Identifiant ou mot de passe incorrect";
                 }
                 
             }else{
-                echo implode("<br>",$result);
+                echo implode("<br>",$result); //renvoi les erreurs du formulaires
             }
-
            
         }     
-
-        // $view->assign("pseudo", "Prof");
-        // $view->assign("firstname", "Yves");
-        // $view->assign("lastname", "Skrzypczyk");
 
     }
 

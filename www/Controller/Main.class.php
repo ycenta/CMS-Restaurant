@@ -10,13 +10,18 @@ class Main {
 
     public function __construct()
     {
-        Auth::check();
+       
     }
 
     public function home()
     {
         echo "Page d'accueil";
-        echo $_SESSION['email'];
+        if(Auth::check()){
+            echo "<br>";
+            echo $_SESSION['email'];
+            echo "<br>";
+            echo $_SESSION['auth'];
+        }
     }
 
 

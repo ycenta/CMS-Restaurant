@@ -12,7 +12,22 @@ class Auth
             session_start();
         }
         if(!isset($_SESSION['auth'])){
-            echo "error not connected<br>";
+           return false;
+        }else{
+            return !empty($_SESSION['auth']);
+        }
+    }
+
+
+
+    public static function authIsAdmin()
+    {
+        //WIP
+        if(!isset($_SESSION['security'])){
+           return false;
+        }else{
+            
+            return !empty($_SESSION['security']);
         }
     }
 
