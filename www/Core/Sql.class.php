@@ -9,8 +9,9 @@ abstract class Sql
 {
     private $pdo;
     private $table;
+    private $class;
 
-    public function __construct()
+    public function __construct(string $table = NULL, string $class = NULL)
     {
         //Se connecter à la bdd
         //il faudra mettre en place le singleton
@@ -21,9 +22,20 @@ abstract class Sql
             die("Erreur SQL : ".$e->getMessage());
         }
 
+        
+        if(isset($class)){
+            $this->class = $class;
+        }
+
         //Si l'id n'est pas null alors on fait un update sinon on fait un insert
         $calledClassExploded = explode("\\",get_called_class());
-        $this->table = strtolower(DBPREFIXE.end($calledClassExploded));
+        if(isset($table)){
+            $this->table = strtolower(DBPREFIXE.($table));
+        }else{
+            $this->table = strtolower(DBPREFIXE.end($calledClassExploded));
+        }
+
+
 
     }
 
@@ -72,9 +84,16 @@ abstract class Sql
             ->getQuery();
 
             $query = $this->pdo->query($sql);
-            return $query->fetchObject(get_called_class());
+            
+            if(isset($this->class)){
+                return $query->fetchObject($this->class);
+            }else{
+                return $query->fetchObject(get_called_class());
+            }
       
     }
+
+    //Function Find
 
 
 //    public function findByMultipleCustom(string $column, $value)

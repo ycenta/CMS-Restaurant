@@ -16,11 +16,10 @@ class Main {
     public function home()
     {
         echo "Page d'accueil";
-        if(Auth::check()){
+        if(isset($_SESSION['auth']) && !empty($_SESSION['auth'])){
             echo "<br>";
             echo $_SESSION['email'];
             echo "<br>";
-            echo $_SESSION['auth'];
         }
     }
 

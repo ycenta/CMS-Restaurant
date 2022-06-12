@@ -6,14 +6,14 @@ use App\Core\Sql;
 use App\Core\Mailsender;
 use App\Core\Verificator;
 use App\Core\View;
-use App\Core\Auth;
 use App\Model\User as UserModel;
+use App\Security\UserSecurity;
 
 class User {
 
     public function __construct()
     {
-        Auth::check();
+        // Auth::check();
     }
 
     public function login()
@@ -21,6 +21,7 @@ class User {
         $user = new UserModel();
         $view = new View("Login");
 
+        $view->assign("user", $user);
         
         if(!empty($_POST)){
             $result = Verificator::checkForm($user->getLoginForm(), $_POST);
@@ -29,7 +30,9 @@ class User {
                 $emailToCheck = $_POST['email'];
                 $passwordToCheck = $_POST['password'];
 
-                $user = $user->checkLogin($emailToCheck,$passwordToCheck); //On check la paire mail/password
+                $userSecurity = new UserSecurity();
+
+                $user = $userSecurity->checkLogin($emailToCheck,$passwordToCheck); //On check la paire mail/password
                 if($user){ // Si un utilisateur est renvoyé, on crée la session
                     echo "sucess";
                     $_SESSION['auth'] = $user->getId();
@@ -38,7 +41,7 @@ class User {
 
                     $view->assign("firstname",  $_SESSION['firstname']);
                     // $view->assign("lastname", "Skrzypczyk");
-                    header('Location: http://localhost');
+                    header('Location: /');
                 }else{
                     echo "Identifiant ou mot de passe incorrect";
                 }
@@ -82,7 +85,9 @@ class User {
 
     public function logout()
     {
-        echo "Se déco";
+        $view = new View("logout");
+        session_start();
+        session_destroy();
     }
 
 

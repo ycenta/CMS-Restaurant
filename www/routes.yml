@@ -13,6 +13,7 @@
 /logout:
   controller: user
   action: logout
+  middleware: auth
 
 /register:
   controller: user
