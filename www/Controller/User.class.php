@@ -38,7 +38,7 @@ class User {
                     $_SESSION['auth'] = $user->getId();
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['firstname'] = $user->getFirstname();
-                    $_SESSION['role'] = $user->getRole() ?? '';
+                    $_SESSION['role'] = $user->getRole();
 
                     $view->assign("firstname",  $_SESSION['firstname']);
                     // $view->assign("lastname", "Skrzypczyk");
@@ -87,7 +87,6 @@ class User {
     public function logout()
     {
         $view = new View("logout");
-        session_start();
         session_destroy();
     }
 

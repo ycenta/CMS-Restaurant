@@ -47,9 +47,10 @@ $role = array_map('strtolower', ($routes[$uri]["role"]));
  *  Sinon rediriger vers la home ou la page de login
  *
  */
-if(!in_array($_SESSION['role'], $role) && !in_array('none', $role)){
-    header('Location: http://localhost/login');
-}
+
+    if(!in_array($_SESSION['role'], $role) && !in_array('none', $role)){
+        header('Location: /login');
+    }
 
 $controllerFile = "Controller/".$controller.".class.php";
 if(!file_exists($controllerFile)){

@@ -13,6 +13,7 @@ class User extends Sql
     protected $password;
     protected $status = 0;
     protected $token = null;
+    protected $role = null;
 
     public function __construct()
     {
@@ -118,6 +119,22 @@ class User extends Sql
         return $this->token;
     }
 
+      /**
+     * @param int $status
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
+
+      /**
+     * @return null|string
+     */
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
     /**
      * length : 255
      */
@@ -221,7 +238,9 @@ class User extends Sql
         $this->setEmail($_POST["email"]) ;
         $this->setPassword($_POST["password"]) ;
         $this->setStatus(0) ;
+        $this->setRole('user');
         $this->generateToken() ;
+        
 
         if (password_verify($_POST["passwordConfirm"] , $this->password)) {
             echo "true";

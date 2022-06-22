@@ -15,6 +15,7 @@ class Main {
 
     public function home()
     {
+        print_r($_SESSION);
         echo "Page d'accueil";
         if(isset($_SESSION['auth']) && !empty($_SESSION['auth'])){
             echo "<br>";
