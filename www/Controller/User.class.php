@@ -38,6 +38,7 @@ class User {
                     $_SESSION['auth'] = $user->getId();
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['firstname'] = $user->getFirstname();
+                    $_SESSION['role'] = $user->getRole() ?? '';
 
                     $view->assign("firstname",  $_SESSION['firstname']);
                     // $view->assign("lastname", "Skrzypczyk");
