@@ -1,35 +1,48 @@
 /:
   controller: main
   action: home
+  role: 
+    - none
 
 /contact:
   controller: main
   action: contact
+  role: 
+    - none
 
 /login:
   controller: user
   action: login
+  role: 
+    - none
 
 /logout:
   controller: user
   action: logout
-  middleware: auth
+  role: 
+    - none
 
 /register:
   controller: user
   action: register
+  role: 
+    - none
 
 /forget:
   controller: user
   action: pwdforget
+  role: 
+    - none
 
 /mail:
   controller: user
   action: sendmail
+  role: 
+    - none
 
 /dashboard:
   controller: admin
   action: dashboard
-  security:
+  role:
     - admin
     - user
