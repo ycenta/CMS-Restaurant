@@ -68,9 +68,8 @@ abstract class Sql
 
         }
 
-        $queryPrepared = $this->pdo->query($sql);
-        // print_r($sql);
-        // print_r($columns);
+        $queryPrepared = $this->pdo->prepare($sql);
+      
         $queryPrepared->execute( $columns );
 
     }

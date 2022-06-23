@@ -66,7 +66,6 @@ class User {
         if( !empty($_POST)){
 
             $result = Verificator::checkForm($user->getRegisterForm(), $_POST);
-            print_r($result);
             if (empty($result)) {
               $user->setUser();
               $user->save();
