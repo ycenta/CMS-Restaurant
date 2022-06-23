@@ -15,11 +15,10 @@ class Main {
 
     public function home()
     {
-        print_r($_SESSION);
         echo "Page d'accueil";
         if(isset($_SESSION['auth']) && !empty($_SESSION['auth'])){
             echo "<br>";
-            echo $_SESSION['email'];
+            echo "Bienvenue ".$_SESSION['email'];
             echo "<br>";
         }
     }

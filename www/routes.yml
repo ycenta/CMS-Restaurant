@@ -45,4 +45,3 @@
   action: dashboard
   role:
     - admin
-    - user

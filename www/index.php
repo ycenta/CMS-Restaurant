@@ -48,9 +48,18 @@ $role = array_map('strtolower', ($routes[$uri]["role"]));
  *
  */
 
-    if(!in_array($_SESSION['role'], $role) && !in_array('none', $role)){
+if(!in_array('none', $role)){
+
+    if(isset($_SESSION['role'])){
+
+       if(!in_array($_SESSION['role'],$role)){
+        header('Location: /');
+       }
+
+    }else{
         header('Location: /login');
     }
+}
 
 $controllerFile = "Controller/".$controller.".class.php";
 if(!file_exists($controllerFile)){

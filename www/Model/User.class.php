@@ -243,7 +243,6 @@ class User extends Sql
         
 
         if (password_verify($_POST["passwordConfirm"] , $this->password)) {
-            echo "true";
             return true;
         }
         else {
