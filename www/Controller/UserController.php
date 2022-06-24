@@ -9,7 +9,7 @@ use App\Core\View;
 use App\Model\User as UserModel;
 use App\Security\UserSecurity;
 
-class User {
+class UserController {
 
     public function __construct()
     {

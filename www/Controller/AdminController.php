@@ -3,7 +3,7 @@
 namespace App\Controller;
 use App\Core\Auth;
 
-class Admin
+class AdminController
 {
     public function __construct()
     {

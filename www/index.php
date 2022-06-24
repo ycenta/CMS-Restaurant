@@ -61,7 +61,7 @@ if(!in_array('none', $role)){
     }
 }
 
-$controllerFile = "Controller/".$controller.".class.php";
+$controllerFile = "Controller/".$controller."Controller.php";
 if(!file_exists($controllerFile)){
     die("Le controller ".$controllerFile." n'existe pas");
 }
@@ -69,7 +69,7 @@ if(!file_exists($controllerFile)){
 //Mais comme on fait vérification avant du fichier le include est plus rapide a executer
 include $controllerFile;
 
-$controller = "App\\Controller\\".$controller;
+$controller = "App\\Controller\\".$controller."Controller";
 if( !class_exists($controller)){
     die("La classe ".$controller." n'existe pas");
 }

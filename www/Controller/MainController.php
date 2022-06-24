@@ -6,7 +6,7 @@ use App\Core\View;
 use App\Core\Auth;
 
 
-class Main {
+class MainController {
 
     public function __construct()
     {
