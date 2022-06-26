@@ -23,7 +23,6 @@ spl_autoload_register("App\myAutoloader");
 
 //Réussir à récupérer l'URI
 $uri =  strtok($_SERVER["REQUEST_URI"], '?');
-
 $routeFile = "routes.yml";
 if(!file_exists($routeFile)){
     die("Le fichier ".$routeFile." n'existe pas");

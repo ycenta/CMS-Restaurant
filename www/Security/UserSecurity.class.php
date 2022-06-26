@@ -28,7 +28,38 @@ class UserSecurity extends Sql
       return $result;
     }
 
+    public function findByToken(string $token)
+    {
+       $result = $this->findByCustom("token",$token);
+      
+      return $result;
+    }
 
+    public function validateAccount(string $token)
+    {
+        $today = date("Y-m-d H:i:s");
+
+        $user = $this->findByToken($token); 
+        if(!empty($user)){ // Si on trouve un compte avec le mail correspondant
+            if($today < $user->getTokenExpiration()){
+
+                if($user->getStatus() == 0){
+                    $user->setStatus(1);
+                    $user->save();
+                    return "Account is now actived !";
+                }else{
+                    return "Account is already actived";
+                }
+
+            }else{
+                return "Activation code is wrong or expired";
+            }
+                
+        }else{
+            return "Activation code is wrong or expired (no user) ";
+        }
+    }
+    
 
     public function checkLogin(string $usermail,string $userpassword)
     {

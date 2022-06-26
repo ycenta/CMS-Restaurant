@@ -12,8 +12,12 @@ class User extends Sql
     protected $email;
     protected $password;
     protected $status = 0;
+    protected $id_role = 1;
     protected $token = null;
-    protected $role = null;
+    protected $reset_token = null;
+    protected $auth_token = null;
+    protected $reset_token_expiration = null;
+    protected $token_expiration = null;
 
     public function __construct()
     {
@@ -111,6 +115,22 @@ class User extends Sql
         $this->status = $status;
     }
 
+     /**
+     * @return int
+     */
+    public function getRoleId(): int
+    {
+        return $this->id_role;
+    }
+
+    /**
+     * @param int $id_role
+     */
+    public function setRoleId(int $id_role): void
+    {
+        $this->id_role = $id_role;
+    }
+
     /**
      * @return null|string
      */
@@ -119,20 +139,28 @@ class User extends Sql
         return $this->token;
     }
 
-      /**
-     * @param int $status
-     */
-    public function setRole(string $role): void
-    {
-        $this->role = $role;
-    }
-
-      /**
+    /**
      * @return null|string
      */
-    public function getRole(): ?string
+    public function getTokenExpiration(): ?string
     {
-        return $this->role;
+        return $this->token_expiration;
+    }
+    
+     /**
+     * @return null|string
+     */
+    public function getAuthToken(): ?string
+    {
+        return $this->auth_token;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getResetToken(): ?string
+    {
+        return $this->reset_token;
     }
 
     /**
@@ -141,6 +169,9 @@ class User extends Sql
     public function generateToken(): void
     {
         $this->token = substr(bin2hex(random_bytes(128)), 0, 255);
+        $expiration_date = time()+3600;
+        $this->token_expiration = date("Y-m-d H:i:s", $expiration_date);
+        
     }
 
 
@@ -237,8 +268,8 @@ class User extends Sql
         $this->setLastname($_POST["lastname"]) ;
         $this->setEmail($_POST["email"]) ;
         $this->setPassword($_POST["password"]) ;
-        $this->setStatus(0) ;
-        $this->setRole('user');
+        $this->setStatus(0);
+        $this->setRoleId(1);
         $this->generateToken() ;
         
 

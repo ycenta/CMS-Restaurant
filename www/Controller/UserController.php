@@ -58,27 +58,33 @@ class UserController {
 
     public function register()
     {
-      $user = new UserModel();
-      $view = new View("register");
+        $user = new UserModel();
 
-      $view->assign("user", $user);
+        if(isset($_GET['activation']) && !empty($_GET['activation'])){
+            $userSecurity = new UserSecurity();
+            echo $userSecurity->validateAccount($_GET['activation']); //On check si un compte possède le token
+        }else{
 
-        if( !empty($_POST)){
+            $view = new View("register");
 
-            $result = Verificator::checkForm($user->getRegisterForm(), $_POST);
-            if (empty($result)) {
-              $user->setUser();
-              $user->save();
+            $view->assign("user", $user);
 
-              $mailtest = new Mailsender();
-              $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/register?activation=".$user->getToken());
+            if( !empty($_POST)){
+
+                $result = Verificator::checkForm($user->getRegisterForm(), $_POST);
+                if (empty($result)) {
+                $user->setUser();
+                $user->save();
+
+                $mailtest = new Mailsender();
+                $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/register?activation=".$user->getToken());
+                }
+                else {
+                    echo "Erreur";
+                }
+            
             }
-            else {
-              echo "Erreur";
-            }
-        
         }
-
 
     }
 
