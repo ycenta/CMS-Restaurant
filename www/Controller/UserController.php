@@ -35,10 +35,17 @@ class UserController {
                 $user = $userSecurity->checkLogin($emailToCheck,$passwordToCheck); //On check la paire mail/password
                 if($user){ // Si un utilisateur est renvoyé, on crée la session
                     echo "sucess";
+                    $user->generateAuthToken();
+                    $user->save();
+
                     $_SESSION['auth'] = $user->getId();
+                    $_SESSION['token'] = $user->getAuthToken();
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['firstname'] = $user->getFirstname();
-                    $_SESSION['role'] = $user->getRole();
+                    $_SESSION['role'] = $user->getRoleId();
+
+                    // $_SESSION['role'] = Role::getRoleById($user->getRoleId());
+                    // faire une methode UserSecurity->getRoleById?
 
                     $view->assign("firstname",  $_SESSION['firstname']);
                     // $view->assign("lastname", "Skrzypczyk");

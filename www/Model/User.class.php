@@ -174,6 +174,14 @@ class User extends Sql
         
     }
 
+    /**
+     * length : 255
+     */
+    public function generateAuthToken(): void
+    {
+        $this->auth_token = substr(bin2hex(random_bytes(128)), 0, 255);        
+    }
+
 
     public function getRegisterForm(): array
     {
