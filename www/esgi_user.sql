@@ -24,6 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `esgi_role`
+--
+
+DROP TABLE IF EXISTS `esgi_role`;
+CREATE TABLE IF NOT EXISTS `esgi_role` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+COMMIT;
+
+
+
+--
 -- Structure de la table `esgi_user`
 --
 
@@ -34,7 +48,12 @@ CREATE TABLE `esgi_user` (
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(100) DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
+  `id_role` int DEFAULT NULL,
   `token` char(255) DEFAULT NULL,
+  `reset_token` char(255) DEFAULT NULL,
+  `auth_token` char(255) DEFAULT NULL,
+  `reset_token_expiration` timestamp NULL DEFAULT NULL,
+  `auth_token_expiration` timestamp NULL DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -49,6 +68,13 @@ CREATE TABLE `esgi_user` (
 ALTER TABLE `esgi_user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
+
+--
+-- Foreign key pour la table `esgi_user`
+--
+ALTER TABLE `esgi_user`
+ADD FOREIGN KEY (`id_role`) REFERENCES `esgi_role`(`id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées

@@ -67,11 +67,6 @@ class UserController {
     {
         $user = new UserModel();
 
-        if(isset($_GET['activation']) && !empty($_GET['activation'])){
-            $userSecurity = new UserSecurity();
-            echo $userSecurity->validateAccount($_GET['activation']); //On check si un compte possède le token
-        }else{
-
             $view = new View("register");
 
             $view->assign("user", $user);
@@ -84,16 +79,27 @@ class UserController {
                 $user->save();
 
                 $mailtest = new Mailsender();
-                $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/register?activation=".$user->getToken());
+                $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());
                 }
                 else {
                     echo "Erreur";
                 }
             
             }
-        }
+        
 
     }
+
+    public function activation()
+    {
+        if(isset($_GET['code']) && !empty($_GET['code'])){
+            $userSecurity = new UserSecurity();
+            echo $userSecurity->validateAccount($_GET['code']); //On check si un compte possède le token
+        }else{
+            header('Location: /');
+        }
+    }
+
 
 
     public function logout()

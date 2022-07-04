@@ -28,6 +28,12 @@
   role: 
     - none
 
+/activation:
+  controller: user
+  action: activation
+  role: 
+    - none
+
 /forget:
   controller: user
   action: pwdforget
