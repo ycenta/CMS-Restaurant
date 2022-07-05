@@ -336,6 +336,49 @@ class User extends Sql
         ];
     }
 
+    public function getProfileForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "submit"=>"Mettre à jour son profil"
+            ],
+            'inputs'=>[
+                "email"=>[
+                    "type"=>"email",
+                    "placeholder"=>"Votre email ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"emailForm",
+                    "error"=>"Email incorrect",
+                    "unicity"=>"true",
+                    "errorUnicity"=>"Email déjà en bdd",
+                    "value" => $this->getEmail()
+                ],
+                "firstname"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Votre prénom ...",
+                    "class"=>"inputForm",
+                    "id"=>"firstnameForm",
+                    "min"=>2,
+                    "max"=>50,
+                    "error"=>"Prénom incorrect",
+                    "value" => $this->getFirstname()
+                ],
+                "lastname"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Votre nom ...",
+                    "class"=>"inputForm",
+                    "id"=>"lastnameForm",
+                    "min"=>2,
+                    "max"=>100,
+                    "error"=>"Nom incorrect",
+                    "value" => $this->getLastname()
+                ]
+            ]
+        ];
+    }
 
     public function setUser(){
 

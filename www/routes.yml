@@ -61,7 +61,13 @@
   controller: user
   action: showprofile
   role:
-    - user
+    - none
+
+/profile-editpassword:
+  controller: user
+  action: editpasswordprofile
+  role:
+    - none
 
 /mail:
   controller: user

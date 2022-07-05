@@ -178,6 +178,53 @@ class UserController {
         }
     }
 
+    public function showprofile()
+    {
+        $userSecurity = new UserSecurity();
+        $user = $userSecurity->findByUsermail($_SESSION['email']); //On check si un compte possède le mail
+        if($user){
+            if($_POST){
+                // print_r($_POST);
+                $resultProfil = Verificator::checkForm($user->getProfileForm(), $_POST);
+                echo "1 : ".$resultProfil;
+            }
+            $view = new View("profil");
+            $view->assign("user", $user);
+        }else{
+            header('Location: /');
+        }
+    }
+
+    public function editpasswordprofile()
+    {
+        $userSecurity = new UserSecurity();
+        $user = $userSecurity->findByUsermail($_SESSION['email']); //On check si un compte possède le mail
+        if($user){
+            $view = new View("editpassword");
+            $view->assign("user", $user);
+
+            if($_POST){
+                $result = Verificator::checkForm($user->getResetPasswordForm(), $_POST);
+    
+                if(empty($result)){
+                    $user->setPassword($_POST["password"]) ;
+                    $user->save();
+                    $message = "Le mot de passe à bien été changé - Redirection";
+                    // header('Location: /');
+                }else{
+                    // header('Location: /');
+                    $message = 'Erreur lors de lenvoi du formulaire';
+                }
+                $view->assign("message", $message);
+            }
+
+        }else{
+            header('Location: /');
+        }
+       
+        
+    }
+
     public function sendmail()
     {
         echo "page d'envoi mail<br>";

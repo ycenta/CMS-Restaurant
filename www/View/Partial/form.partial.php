@@ -2,12 +2,15 @@
 
     <?php foreach ($data["inputs"] as $name=>$input) :?>
 
+    <label for="<?= $name?>"><?= $name?></label>   
+    
     <input
             type="<?= $input["type"]??"text" ?>"
             name="<?= $name?>"
             placeholder="<?= $input["placeholder"]??"" ?>"
             id="<?= $input["id"]??"" ?>"
             class="<?= $input["class"]??"" ?>"
+            value="<?= $input["value"]??"" ?>"
             <?= empty($input["required"])?"":'required="required"' ?>
     ><br>
 
