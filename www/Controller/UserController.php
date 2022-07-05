@@ -101,7 +101,6 @@ class UserController {
     }
 
 
-
     public function logout()
     {
         $view = new View("logout");
@@ -111,7 +110,72 @@ class UserController {
 
     public function pwdforget()
     {
-        echo "Mot de passe oublié";
+        $user = new UserModel();
+        $view = new View("forget");
+
+        $view->assign("user", $user);
+
+        if( !empty($_POST)){
+
+            $result = Verificator::checkForm($user->getForgetPasswordForm(), $_POST);
+            if (empty($result)) {
+                $emailToCheck = $_POST['email'];
+
+                $userSecurity = new UserSecurity();
+                $user = $userSecurity->findByUsermail($emailToCheck); //On check si un compte possède le mail
+
+                if($user){
+                    $user->generateResetToken();
+                    $user->save();
+
+                    $mailtest = new Mailsender();
+                    $mailtest->sendMail('forget', $user->getEmail(),$user->getFirstname(),"http://localhost/reset-pwd?code=".$user->getResetToken());
+                    echo "Mail de récupération envoyé";
+                }else{
+                    echo "Compte inexistant";
+                } 
+
+            // $mailtest = new Mailsender();
+            // $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());
+            }
+            else {
+                echo "Erreur";
+            }
+        
+        }
+
+
+    }
+
+    public function resetpassword()
+    {
+        if(isset($_GET['code']) && !empty($_GET['code'])){
+            $userSecurity = new UserSecurity();
+            $user =  $userSecurity->findByResetToken($_GET['code']); //On check si un compte possède le token
+        
+            if($user){ //Si c'est le cas on affiche le formulaire de reset password, sinon on redirige
+                $view = new View("reset");
+                $view->assign("user", $user);
+
+                if($_POST){
+                    $result = Verificator::checkForm($user->getResetPasswordForm(), $_POST);
+
+                    if(empty($result)){
+                        $user->setPassword($_POST["password"]) ;
+                        $user->emptyResetToken();
+                        $user->save();
+                        echo "Le mot de passe à bien été changé - Redirection";
+                    }
+                }
+
+            }else{
+
+            header('Location: /');
+        }
+        
+        }else{
+            header('Location: /');
+        }
     }
 
     public function sendmail()

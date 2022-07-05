@@ -35,6 +35,13 @@ class UserSecurity extends Sql
       return $result;
     }
 
+    public function findByResetToken(string $reset_token)
+    {
+       $result = $this->findByCustom("reset_token",$reset_token);
+      
+      return $result;
+    }
+
     public function validateAccount(string $token)
     {
         $today = date("Y-m-d H:i:s");

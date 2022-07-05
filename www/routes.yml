@@ -51,6 +51,17 @@
 /list:
   controller: page
   action: displayAllPages
+/reset-pwd:
+  controller: user
+  action: resetpassword
+  role: 
+    - none
+
+/profile:
+  controller: user
+  action: showprofile
+  role:
+    - user
 
 /mail:
   controller: user

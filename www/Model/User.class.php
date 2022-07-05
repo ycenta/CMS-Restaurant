@@ -182,6 +182,21 @@ class User extends Sql
         $this->auth_token = substr(bin2hex(random_bytes(128)), 0, 255);        
     }
 
+    /**
+     * length : 255
+     */
+    public function generateResetToken(): void
+    {
+        $this->reset_token = substr(bin2hex(random_bytes(128)), 0, 255);   
+        $expiration_date = time()+3600;
+        $this->reset_token_expiration = date("Y-m-d H:i:s", $expiration_date);     
+    }
+
+    public function emptyResetToken(): void
+    {
+        $this->reset_token = NULL;
+        $this->reset_token_expiration = NULL;
+    }
 
     public function getRegisterForm(): array
     {
@@ -264,6 +279,58 @@ class User extends Sql
                     "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"pwdForm"
+                ]
+            ]
+        ];
+    }
+
+    public function getForgetPasswordForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "submit"=>"Envoyer un lien pour changer mon mot de passe"
+            ],
+            'inputs'=>[
+                "email"=>[
+                    "type"=>"email",
+                    "placeholder"=>"Votre email ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"emailForm",
+                    "error"=>"Email incorrect"
+                ]
+            ]
+        ];
+    }
+
+
+    public function getResetPasswordForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "submit"=>"Changer mon mot de passe"
+            ],
+            'inputs'=>[
+                "password"=>[
+                    "type"=>"password",
+                    "placeholder"=>"Votre mot de passe ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"pwdForm",
+                    "error"=>"Votre mot de passe doit faire au min 8 caractères avec majuscule, minuscules et des chiffres",
+                    ],
+                "passwordConfirm"=>[
+                    "type"=>"password",
+                    "placeholder"=>"Confirmation ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"pwdConfirmForm",
+                    "confirm"=>"password",
+                    "error"=>"Votre mot de passe de confirmation ne correspond pas",
                 ]
             ]
         ];
