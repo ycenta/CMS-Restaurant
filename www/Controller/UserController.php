@@ -186,7 +186,6 @@ class UserController {
             if($_POST){
                 // print_r($_POST);
                 $resultProfil = Verificator::checkForm($user->getProfileForm(), $_POST);
-                echo "1 : ".$resultProfil;
             }
             $view = new View("profil");
             $view->assign("user", $user);
@@ -204,12 +203,17 @@ class UserController {
             $view->assign("user", $user);
 
             if($_POST){
-                $result = Verificator::checkForm($user->getResetPasswordForm(), $_POST);
+                $result = Verificator::checkForm($user->getChangePasswordForm(), $_POST);
     
                 if(empty($result)){
-                    $user->setPassword($_POST["password"]) ;
-                    $user->save();
-                    $message = "Le mot de passe à bien été changé - Redirection";
+                    if(password_verify($_POST["currentPassword"],$user->getPassword())){
+                        $user->setPassword($_POST["password"]) ;
+                        $user->save();
+                        $message = "Le mot de passe à bien été changé - Redirection";
+                    }else{
+                        $message = "mauvais mot de passe";
+                    }
+                   
                     // header('Location: /');
                 }else{
                     // header('Location: /');
