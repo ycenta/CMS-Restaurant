@@ -15,7 +15,7 @@ class Verificator
         }
 
         foreach ($config['inputs'] as $name=>$input){
-
+            
             if(!isset($data[$name]) ){
                 $result[] = "Le champs ".$name." n'existe pas";
             }
@@ -35,6 +35,10 @@ class Verificator
             if(!empty($input["confirm"]) && $data[$name] != $data[$input["confirm"]]){
                 $result[] = $input["error"];
             }
+
+           // if($input["type"] == "string" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
+        //    $result[] = $input["error"];
+           // }
 
 
         }

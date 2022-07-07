@@ -1,14 +1,16 @@
 <?php
 namespace App\Model;
 
+
 use App\Core\Sql;
 
 class Page extends Sql
 {
-    protected $id = ;
-    protected $name = ;
-    protected $title = ;
-    protected $content = null ;
+    protected $id;
+    protected $name;
+    protected $title;
+    protected $content = null;
+    protected $slug;
 
     public function __construct()
     {
@@ -24,23 +26,38 @@ class Page extends Sql
         return $this->id;
     }
 
-
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+    
+    /**
+     * @param string $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = trim($name);
+    }
 
     /**
      * @return null|string
      */
-    public function getname(): ?string
+    public function getSlug(): ?string
     {
-        return $this->name;
+        return $this->slug;
     }
-
+    
     /**
-     * @param string $name
+     * @param string $slug
      */
-    public function setname(?string $name): void
+    public function setSlug(?string $slug): void
     {
-        $this->name = trim($name);
+        $this->slug = $slug;
     }
+ 
 
     /**
      * @return null|string
@@ -74,6 +91,37 @@ class Page extends Sql
         $this->content = strtolower(trim($content));
     }
 
+    public function getAll()
+    {
+
+        $sql = "SELECT * FROM esgi_page";
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        $pages = $query->fetchAll(\PDO::FETCH_CLASS, get_called_class());
+        return $pages;
+    }
+    public function selectBySlug()
+    { 
+            $sql = "SELECT * FROM esgi_page WHERE slug = :slug";
+            $query = $this->pdo->prepare($sql);
+            $query->execute(['slug' => $this->slug]);
+            $page = $query->fetchObject(get_called_class());
+            return $page;
+    }
+    //     $pages = [];
+    //     foreach ($result as $row) {
+    //         $page = new Page();
+    //         $page->setId($row['id']);
+    //         $page->setName($row['name']);
+    //         $page->setTitle($row['title']);
+    //         $page->setContent($row['content']);
+    //         $page->setSlug($row['slug']);
+    //         $pages[] = $page;
+    //     }
+    //     return $pages;
+    //     var_dump($pages);
+    // }
+
     public function getCreationForm(): array
     {
         return [
@@ -93,41 +141,23 @@ class Page extends Sql
                 ],
                 "title"=>[
                     "type"=>"title",
-                    "placeholder"=>"Votre mot de passe ...",
+                    "placeholder"=>"titre : ...",
                     "required"=>true,
                     "class"=>"inputForm",
-                    "id"=>"pwdForm",
-                    "error"=>"Votre mot de passe doit faire au min 8 caractères avec majuscule, minuscules et des chiffres",
+                    "id"=>"titleForm",
+                    "error"=>"Votre titre est bizarre",
                     ],
-                "passwordConfirm"=>[
-                    "type"=>"password",
-                    "placeholder"=>"Confirmation ...",
+                "content"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Contenu ...",
                     "required"=>true,
                     "class"=>"inputForm",
-                    "id"=>"pwdConfirmForm",
-                    "confirm"=>"password",
-                    "error"=>"Votre mot de passe de confirmation ne correspond pas",
-                ],
-                "firstname"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Votre prénom ...",
-                    "class"=>"inputForm",
-                    "id"=>"firstnameForm",
-                    "min"=>2,
-                    "max"=>50,
-                    "error"=>"Prénom incorrect"
-                ],
-                "lastname"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Votre nom ...",
-                    "class"=>"inputForm",
-                    "id"=>"lastnameForm",
-                    "min"=>2,
-                    "max"=>100,
-                    "error"=>"Nom incorrect"
+                    "id"=>"contentForm",
+                    "error"=>"Ton contenue est bizarre",
                 ],
             ]
         ];
     }
+ 
 
 }

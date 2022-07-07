@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\yaml_parse_file;
 
 require "conf.inc.php";
 
@@ -19,7 +20,7 @@ spl_autoload_register("App\myAutoloader");
 
 
 //Réussir à récupérer l'URI
-$uri = $_SERVER["REQUEST_URI"];
+$uri =  strtok($_SERVER["REQUEST_URI"], '?');
 
 $routeFile = "routes.yml";
 if(!file_exists($routeFile)){
@@ -28,6 +29,7 @@ if(!file_exists($routeFile)){
 
 $routes = yaml_parse_file($routeFile);
 
+var_dump($routes);
 if( empty($routes[$uri]) ||  empty($routes[$uri]["controller"])  ||  empty($routes[$uri]["action"])){
     die("Erreur 404");
 }
@@ -45,7 +47,7 @@ $action = strtolower($routes[$uri]["action"]);
  */
 
 
-$controllerFile = "Controller/".$controller.".class.php";
+$controllerFile = "Controller/".$controller."Controller.php";
 if(!file_exists($controllerFile)){
     die("Le controller ".$controllerFile." n'existe pas");
 }
@@ -53,7 +55,7 @@ if(!file_exists($controllerFile)){
 //Mais comme on fait vérification avant du fichier le include est plus rapide a executer
 include $controllerFile;
 
-$controller = "App\\Controller\\".$controller;
+$controller = "App\\Controller\\".$controller."Controller";
 if( !class_exists($controller)){
     die("La classe ".$controller." n'existe pas");
 }

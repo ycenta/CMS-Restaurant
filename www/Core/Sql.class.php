@@ -4,7 +4,7 @@ namespace App\Core;
 
 abstract class Sql
 {
-    private $pdo;
+    public $pdo;
     private $table;
 
     public function __construct()
@@ -58,5 +58,24 @@ abstract class Sql
 
     }
 
+    public function read()
+    {
 
+        $columns = get_object_vars($this);
+        $columns = array_diff_key($columns, get_class_vars(get_class()));
+
+        if($this->getId() == null){
+            $sql = "SELECT * FROM students WHERE id = ?".$this->table." (".implode(",",array_keys($columns)).") 
+            VALUES ( :".implode(",:",array_keys($columns)).")";
+        }else{
+            $update = [];
+            foreach ($columns as $column=>$value)
+            {
+                $update[] = $column."=:".$column;
+            }
+            $sql = "UPDATE ".$this->table." SET ".implode(",",$update)." WHERE id=".$this->getId() ;
+
+        }
+
+    }
 }

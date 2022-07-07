@@ -1,9 +1,9 @@
 /:
-  controller: main
+  controller: Main
   action: home
 
 /contact:
-  controller: main
+  controller: Main
   action: contact
 
 /login:
@@ -22,6 +22,17 @@
   controller: user
   action: pwdforget
 
+/Newpage:
+  controller: page
+  action: NewPage
+
+/readPage:
+  controller: page
+  action: readPage
+
+/list:
+  controller: page
+  action: displayAllPages
 
 /dashboard:
   controller: admin

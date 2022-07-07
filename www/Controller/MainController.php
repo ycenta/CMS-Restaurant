@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Core\View;
 
-class Main {
+class MainController {
 
     public function home()
     {
