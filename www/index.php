@@ -31,7 +31,7 @@ if(!file_exists($routeFile)){
 
 $routes = yaml_parse_file($routeFile);
 
-var_dump($routes);
+
 if( empty($routes[$uri]) ||  empty($routes[$uri]["controller"])  ||  empty($routes[$uri]["action"]) || empty($routes[$uri]["role"]) ){
     die("Erreur 404");
 }
