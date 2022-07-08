@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Core;
+use App\Core\QueryBuilder;
+
+
 
 abstract class Sql
 {
     public $pdo;
     private $table;
+    private $class;
 
-    public function __construct()
+    public function __construct(string $table = NULL, string $class = NULL)
     {
         //Se connecter à la bdd
         //il faudra mettre en place le singleton
@@ -18,9 +22,20 @@ abstract class Sql
             die("Erreur SQL : ".$e->getMessage());
         }
 
+        
+        if(isset($class)){
+            $this->class = $class;
+        }
+
         //Si l'id n'est pas null alors on fait un update sinon on fait un insert
         $calledClassExploded = explode("\\",get_called_class());
-        $this->table = strtolower(DBPREFIXE.end($calledClassExploded));
+        if(isset($table)){
+            $this->table = strtolower(DBPREFIXE.($table));
+        }else{
+            $this->table = strtolower(DBPREFIXE.end($calledClassExploded));
+        }
+
+
 
     }
 
@@ -54,13 +69,14 @@ abstract class Sql
         }
 
         $queryPrepared = $this->pdo->prepare($sql);
+      
         $queryPrepared->execute( $columns );
 
     }
 
     public function read()
     {
-
+      
         $columns = get_object_vars($this);
         $columns = array_diff_key($columns, get_class_vars(get_class()));
 
@@ -78,4 +94,32 @@ abstract class Sql
         }
 
     }
+  
+    public function findByCustom(string $column,string $value)
+    {
+        $queryBuilder = new QueryBuilder();
+        $sql = $queryBuilder
+            ->select($this->table, ['*'])
+            ->where($column, $value)
+            ->limit(0, 1)
+            ->getQuery();
+
+            $query = $this->pdo->query($sql);
+            
+            if(isset($this->class)){
+                return $query->fetchObject($this->class);
+            }else{
+                return $query->fetchObject(get_called_class());
+            }
+      
+    }
+
+    //Function Find
+
+
+//    public function findByMultipleCustom(string $column, $value)
+//    {
+
+//    }
+
 }

@@ -1,9 +1,11 @@
 <?php
 
 namespace App;
-use App\yaml_parse_file;
+session_start();
 
 require "conf.inc.php";
+
+
 
 function myAutoloader($class)
 {
@@ -30,22 +32,35 @@ if(!file_exists($routeFile)){
 $routes = yaml_parse_file($routeFile);
 
 var_dump($routes);
-if( empty($routes[$uri]) ||  empty($routes[$uri]["controller"])  ||  empty($routes[$uri]["action"])){
+if( empty($routes[$uri]) ||  empty($routes[$uri]["controller"])  ||  empty($routes[$uri]["action"]) || empty($routes[$uri]["role"]) ){
     die("Erreur 404");
 }
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));
 $action = strtolower($routes[$uri]["action"]);
+$role = array_map('strtolower', ($routes[$uri]["role"]));
 
 
 /*
  *
- *  Vérfification de la sécurité, est-ce que la route possède le paramètr security
+ *  Vérfification de la sécurité, est-ce que la route possède le paramètr rôle
  *  Si oui est-ce que l'utilisation a les droits et surtout est-ce qu'il est connecté ?
  *  Sinon rediriger vers la home ou la page de login
  *
  */
 
+if(!in_array('none', $role)){
+
+    if(isset($_SESSION['role'])){
+
+       if(!in_array($_SESSION['role'],$role)){
+        header('Location: /');
+       }
+
+    }else{
+        header('Location: /login');
+    }
+}
 
 $controllerFile = "Controller/".$controller."Controller.php";
 if(!file_exists($controllerFile)){

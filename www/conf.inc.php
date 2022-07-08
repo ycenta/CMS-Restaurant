@@ -8,3 +8,9 @@ define("DBPORT", "3306");
 define("DBDRIVER", "mysql");
 define("DBPREFIXE", "esgi_");
 
+define("HOSTMAIL", "value");
+define("MAILUSERNAME ", "value");
+define("MAILPWD", "value");
+define("SETMAIL", "value");
+
+
