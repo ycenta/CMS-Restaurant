@@ -94,6 +94,26 @@ abstract class Sql
         }
 
     }
+    
+    public function delete()
+    {
+            
+            $columns = get_object_vars($this);
+            $columns = array_diff_key($columns, get_class_vars(get_class()));
+    
+            if($this->getId() == null){
+                $sql = "DELETE FROM ".$this->table." WHERE id = ?";
+            }else{
+                $update = [];
+                foreach ($columns as $column=>$value)
+                {
+                    $update[] = $column."=:".$column;
+                }
+                $sql = "UPDATE ".$this->table." SET ".implode(",",$update)." WHERE id=".$this->getId() ;
+    
+            }
+    
+    }
   
     public function findByCustom(string $column,string $value)
     {
