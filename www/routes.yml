@@ -1,11 +1,11 @@
 /:
-  controller: main
+  controller: Main
   action: home
   role: 
     - none
 
 /contact:
-  controller: main
+  controller: Main
   action: contact
   role: 
     - none
@@ -33,6 +33,18 @@
   action: pwdforget
   role: 
     - none
+
+/Newpage:
+  controller: page
+  action: NewPage
+
+/readPage:
+  controller: page
+  action: readPage
+
+/list:
+  controller: page
+  action: displayAllPages
 
 /mail:
   controller: user

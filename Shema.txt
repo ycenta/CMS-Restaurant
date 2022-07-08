@@ -1,0 +1,47 @@
+Product:
+    - id:integer (AI PrimaryKey)    
+    - name:string
+    - picture:string
+    - description:text
+    - price:float
+    - stock:integer
+
+    - category:Category (fkinteger) MtO
+    - carts:Carts MtM (en réalité OtM to table de jointure 'ProductCart')   
+
+Category:
+    - id:integer (AI PrimaryKey) 
+    - name:string
+    - color:string(6)
+
+    - products:Product (Pas dans la bdd simple jointure) OtM
+
+User:
+    - id:integer (AI PrimaryKey) 
+    - firstname:string
+    - lastname:string
+    - email:string
+    - password:string
+    - status:integer
+    - token:string
+
+Page:
+    - id:integer (AI PrimaryKey) 
+    - name:string
+    - title:string
+    - content:text
+
+Config:
+    - id:integer (AI PrimaryKey) 
+    - navbar:txt
+    - footer:txt
+
+Cart:
+    - id:integer (AI PrimaryKey)
+
+    - user:User (fkinteger) MtO
+    - products:Product MtM (en réalité OtM to table de jointure 'ProductCart')
+
+ProductCart:
+    - cart:Cart (fkinteger) MtO
+    - product:Product (fkinteger) MtO
