@@ -134,6 +134,34 @@ abstract class Sql
       
     }
 
+    public function getAll($columnsToSelect = null)
+    {
+        $queryBuilder = new QueryBuilder();
+        if($columnsToSelect != null && is_array($columnsToSelect)){ // verif if array
+            $sql = $queryBuilder
+            ->select($this->table, $columnsToSelect)
+            ->getQuery();
+        }else{
+            $sql = $queryBuilder
+            ->select($this->table, ['*'])
+            ->getQuery();
+        }
+        
+        $query = $this->pdo->query($sql);
+        if($this->class){
+            $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,$this->class);
+        }else{
+            $resultQuery = $query->fetchAll();
+        }
+        // $objectsArray = [];
+        // foreach($resultQuery as $result){
+        //     $objectsArray[] = '';
+        // }
+        return $resultQuery;
+
+
+    }
+
     //Function Find
 
 

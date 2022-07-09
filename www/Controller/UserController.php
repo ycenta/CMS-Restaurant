@@ -243,4 +243,21 @@ class UserController {
 
     }
 
+    public function users()
+    {
+        
+        echo "Page crud users back office";
+        $userSecurity = new UserSecurity();
+        $users = $userSecurity->getAllUsers();
+
+        $view = new View("User/list");
+        $view->assign("users", $users);
+        // foreach($users as $user){
+        //     echo $user->getFirstname();
+        //     echo "<br>";
+        // }
+
+        
+    }
+
 }

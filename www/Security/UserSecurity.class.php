@@ -42,6 +42,17 @@ class UserSecurity extends Sql
       return $result;
     }
 
+    public function getAllUsers()
+    {
+        $users = $this->getAll(['id','firstname','lastname','email','status']);
+        // $allUsers = [];
+        // foreach($users as $user){
+        //     $allUsers[$user->getId()] = $user->getFirstname().' - '.$user->getLastname().' - '.$user->getEmail();
+        // }
+        return $users;
+    }
+
+
     public function validateAccount(string $token)
     {
         $today = date("Y-m-d H:i:s");

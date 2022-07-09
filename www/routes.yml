@@ -80,3 +80,9 @@
   action: dashboard
   role:
     - admin
+
+/users:
+  controller: user
+  action: users
+  role:
+    - admin
