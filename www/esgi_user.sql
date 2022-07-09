@@ -35,7 +35,19 @@ CREATE TABLE IF NOT EXISTS `esgi_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
+--
+-- Remplissage de la table role
+--
 
+INSERT INTO mvcdocker2.esgi_role
+(id, name)
+VALUES(1, 'user');
+INSERT INTO mvcdocker2.esgi_role
+(id, name)
+VALUES(2, 'editor');
+INSERT INTO mvcdocker2.esgi_role
+(id, name)
+VALUES(3, 'admin');
 
 --
 -- Structure de la table `esgi_user`
