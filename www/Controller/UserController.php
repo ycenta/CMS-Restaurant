@@ -8,6 +8,8 @@ use App\Core\Verificator;
 use App\Core\View;
 use App\Model\User as UserModel;
 use App\Security\UserSecurity;
+use App\Security\RoleSecurity;
+
 
 class UserController {
 
@@ -31,6 +33,7 @@ class UserController {
                 $passwordToCheck = $_POST['password'];
 
                 $userSecurity = new UserSecurity();
+                $roleSecurity = new RoleSecurity();
 
                 $user = $userSecurity->checkLogin($emailToCheck,$passwordToCheck); //On check la paire mail/password
                 if($user){ // Si un utilisateur est renvoyé, on crée la session
@@ -38,11 +41,12 @@ class UserController {
                     $user->generateAuthToken();
                     $user->save();
 
+                   
                     $_SESSION['auth'] = $user->getId();
                     $_SESSION['token'] = $user->getAuthToken();
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['firstname'] = $user->getFirstname();
-                    $_SESSION['role'] = $user->getRoleId();
+                    $_SESSION['role'] = $roleSecurity->getRoleNameById($user->getRoleId());
 
                     // $_SESSION['role'] = Role::getRoleById($user->getRoleId());
                     // faire une methode UserSecurity->getRoleById?

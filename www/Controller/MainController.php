@@ -20,6 +20,8 @@ class MainController {
             echo "<br>";
             echo "Bienvenue ".$_SESSION['email'];
             echo "<br>";
+            echo " Role actuel : ".$_SESSION['role'];
+            echo "<br>";
         }
     }
 

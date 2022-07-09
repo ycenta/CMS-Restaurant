@@ -2,7 +2,6 @@
 
 namespace App;
 session_start();
-
 require "conf.inc.php";
 
 
