@@ -74,6 +74,11 @@ class Verificator
             ;
     }
 
+    public static function checkHiddenFieldInt($hidden): bool
+    {
+        //
+    }
+
 
 
 

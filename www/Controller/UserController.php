@@ -256,8 +256,82 @@ class UserController {
         //     echo $user->getFirstname();
         //     echo "<br>";
         // }
-
         
+    }
+
+    public function removeUser()
+    {
+        echo "page remove user<br>";
+        $user = new UserModel();
+        if(!empty($_POST)){
+            $result = Verificator::checkForm($user->getRemoveUserForm(), $_POST);
+            if(empty($result)){
+                echo "formulaire validé <br>";
+
+                if(is_numeric($_POST['user_id'])){
+                    $userSecurity = new UserSecurity();
+                    $roleSecurity = new RoleSecurity();
+                    echo "User to be deleted :".$_POST['user_id'];
+
+                    $user = $userSecurity->findById($_POST['user_id']); //On récupère l'utilisateur par son ID
+                    if($user){
+                        $userRole = $roleSecurity->getRoleNameById($user->getRoleId()); //On récupère le nom du role de l'utilisateur
+
+                        if($userRole != 'admin' && $user->getRoleId() != 3){ //Si l'utilisateur n'est pas un admin, alors on accepte la suppression
+                            echo "sera supprimé car utilisateur";
+                             if($user->delete($_POST['user_id'])){
+                                header('Location: /users?sucess');
+                            }else{
+                                echo "erreur lors de la suppression";
+                                header('Location: /users?fail');
+                            }
+                        }else{
+                            header('Location: /users?fail');
+                        }
+                    }                   
+                }
+
+            }
+        }
+    }
+
+    public function showUser(){
+        echo "page edit utilisateur par admin<br>";
+        if(!empty($_GET)){
+            $userSecurity = new UserSecurity();
+            $user = $userSecurity->findById($_GET['id']);
+
+            if(!empty($_POST)){
+                $result = Verificator::checkForm($user->getEditUserForm(), $_POST);
+                if(empty($result)){
+
+                    if($user){
+                        $roleSecurity = new RoleSecurity();
+                        $userRole = $roleSecurity->getRoleNameById($user->getRoleId()); //On récupère le nom du role de l'utilisateur
+
+                        if($userRole != 'admin' && $user->getRoleId() != 3){ //Si l'utilisateur n'est pas un admin, alors on accepte la modification
+                                                      
+                                $user->setfirstName($_POST['firstname']);
+                                $user->setlastname($_POST['lastname']);
+                                $user->setRoleId($_POST['role']);
+                                $user->save();
+                                echo "<br>Compte mis à jour";
+                           
+                        }else{
+                            echo "<br>Compte administrateur non modifiable";
+                        }
+                    }   
+                }
+            }
+
+            
+        $view = new View("User/edit");
+        $view->assign("user", $user);
+
+        }else{
+            die('user does not exist');
+        }
+      
     }
 
 }

@@ -65,7 +65,7 @@ CREATE TABLE `esgi_user` (
   `reset_token` char(255) DEFAULT NULL,
   `auth_token` char(255) DEFAULT NULL,
   `reset_token_expiration` timestamp NULL DEFAULT NULL,
-  `auth_token_expiration` timestamp NULL DEFAULT NULL,
+  `token_expiration` timestamp NULL DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

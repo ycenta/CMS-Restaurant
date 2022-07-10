@@ -418,6 +418,68 @@ class User extends Sql
         ];
     }
 
+    public function getEditUserForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "submit"=>"Mettre à jour son profil"
+            ],
+            'inputs'=>[
+                "firstname"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Votre prénom ...",
+                    "class"=>"inputForm",
+                    "id"=>"firstnameForm",
+                    "label"=>'Prenom',
+                    "min"=>2,
+                    "max"=>50,
+                    "error"=>"Prénom incorrect",
+                    "value" => $this->getFirstname()
+                ],
+                "lastname"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Votre nom ...",
+                    "class"=>"inputForm",
+                    "id"=>"lastnameForm",
+                    "label"=>"Nom",
+                    "min"=>2,
+                    "max"=>100,
+                    "error"=>"Nom incorrect",
+                    "value" => $this->getLastname()
+                ],
+                "role"=>[
+                    "type"=>"radio",
+                    "class"=>"inputForm",
+                    "id"=>"roleForm",
+                    "label"=>"Role",
+                    "error"=>"Role incorrect",
+                    "radiolist"=> ['user' => 1 ,'editor'=> 2,'admin' => 3],
+                    "radioChecked"=>$this->getRoleId()
+                ]
+            ]
+        ];
+    }
+
+    public function getRemoveUserForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"user-remove",
+                "submit"=>"Supprimer"
+            ],
+            'inputs'=>[
+                "user_id"=>[
+                    "type"=>"hidden",
+                    "required"=>true,
+                    "value" => $this->getId()
+                ]
+            ]
+        ];
+    }
+
     public function setUser(){
 
         $this->setFirstname($_POST["firstname"]) ;

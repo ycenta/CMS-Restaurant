@@ -95,22 +95,14 @@ abstract class Sql
 
     }
     
-    public function delete()
+    public function delete(int $id): bool
     {
-            
-            $columns = get_object_vars($this);
-            $columns = array_diff_key($columns, get_class_vars(get_class()));
-    
-            if($this->getId() == null){
+               
+            if($id){
                 $sql = "DELETE FROM ".$this->table." WHERE id = ?";
-            }else{
-                $update = [];
-                foreach ($columns as $column=>$value)
-                {
-                    $update[] = $column."=:".$column;
-                }
-                $sql = "UPDATE ".$this->table." SET ".implode(",",$update)." WHERE id=".$this->getId() ;
-    
+                $queryPrepared = $this->pdo->prepare($sql);
+                $passed = $queryPrepared->execute( [$id] );
+                return $passed; //Return true si requête reussie, sinon false
             }
     
     }

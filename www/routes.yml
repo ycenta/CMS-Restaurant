@@ -51,6 +51,9 @@
 /list:
   controller: page
   action: displayAllPages
+  role:
+    - admin
+
 /reset-pwd:
   controller: user
   action: resetpassword
@@ -84,5 +87,23 @@
 /users:
   controller: user
   action: users
+  role:
+    - admin
+
+/user-remove:
+  controller: user
+  action: removeUser
+  role:
+    - admin
+
+/user:
+  controller: user
+  action: showUser
+  role:
+    - admin
+
+/user-edit:
+  controller: user
+  action: editUser
   role:
     - admin
