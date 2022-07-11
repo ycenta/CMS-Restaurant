@@ -71,6 +71,31 @@ CREATE TABLE `esgi_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Structure de la table `esgi_page`
+--
+
+CREATE TABLE `esgi_page` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `slug` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Index pour la table `esgi_page`
+--
+ALTER TABLE `esgi_page`
+  ADD PRIMARY KEY (`id`);
+  
+--
+-- AUTO_INCREMENT pour la table `esgi_page`
+--
+ALTER TABLE `esgi_page`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+
+--
 -- Index pour les tables déchargées
 --
 

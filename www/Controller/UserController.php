@@ -250,7 +250,7 @@ class UserController {
         $userSecurity = new UserSecurity();
         $users = $userSecurity->getAllUsers();
 
-        $view = new View("User/list");
+        $view = new View("User/list",'back');
         $view->assign("users", $users);
         // foreach($users as $user){
         //     echo $user->getFirstname();
@@ -325,7 +325,7 @@ class UserController {
             }
 
             
-        $view = new View("User/edit");
+        $view = new View("User/edit",'back');
         $view->assign("user", $user);
 
         }else{
