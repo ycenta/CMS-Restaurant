@@ -246,7 +246,6 @@ class UserController {
     public function users()
     {
         
-        echo "Page crud users back office";
         $userSecurity = new UserSecurity();
         $users = $userSecurity->getAllUsers();
 
@@ -296,7 +295,6 @@ class UserController {
     }
 
     public function showUser(){
-        echo "page edit utilisateur par admin<br>";
         if(!empty($_GET)){
             $userSecurity = new UserSecurity();
             $user = $userSecurity->findById($_GET['id']);

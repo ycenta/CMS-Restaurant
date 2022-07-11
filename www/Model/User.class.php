@@ -468,6 +468,7 @@ class User extends Sql
             "config"=>[
                 "method"=>"POST",
                 "action"=>"user-remove",
+                "buttonClass" =>"button button--white",
                 "submit"=>"Supprimer"
             ],
             'inputs'=>[

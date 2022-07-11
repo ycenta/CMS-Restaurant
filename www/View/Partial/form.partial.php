@@ -11,7 +11,6 @@
 
     <?php if(!isset($input['radiolist'])){ ?>
 
-   
         <input
                 type="<?= $input["type"]??"text" ?>"
                 name="<?= $name?>"
@@ -20,7 +19,8 @@
                 class="<?= $input["class"]??"" ?>"
                 value="<?= $input["value"]??"" ?>"
                 <?= empty($input["required"])?"":'required="required"' ?>
-        ><br>
+        >        <?php echo $input["type"]=='hidden' ? '' :'<br>' ;?>
+
 
     <?php }else{  
             echo '<br>';
@@ -43,5 +43,5 @@
         }; ?>     
     <?php endforeach;?>
 
-    <input type="submit" value="<?= $data["config"]["submit"]??"Valider" ?>">
+    <input <?= (isset($data["config"]["buttonClass"]) ? 'class="'.$data["config"]["buttonClass"].'"' :''); ?> type="submit" value="<?= $data["config"]["submit"]??"Valider" ?>">
 </form>

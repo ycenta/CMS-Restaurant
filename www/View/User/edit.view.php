@@ -1,12 +1,15 @@
-<html>
-    <head>
-        <title>Page user</title>
-    </head>
-    <body>
-        <h1>Utilisateur</h1>
-        <h3>Informations : </h3>
-        <div>
-            <span>Email : </span><span><?= $user->getEmail();?></span>
+<h1 class="title">Utilisateur</h1>
+
+<div class="table">
+<div class="table-head">
+          <div class="tab">
+            <p>Informations :</p>
+          </div>
         </div>
-        <?php $this->includePartial("form", $user->getEditUserForm()) ?>
-</html>
+    <div class="table-body"> 
+            <div>
+                <span>Email : </span><span><?= $user->getEmail();?></span>
+            </div>
+            <?php $this->includePartial("form", $user->getEditUserForm()) ?>
+    </div>
+</div>

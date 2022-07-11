@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 use App\Core\Auth;
+use App\Core\View;
+
 
 class AdminController
 {
@@ -14,6 +16,8 @@ class AdminController
     {
         
         echo "Ceci est un beau dashboard";
+        $view = new View('test','back');
+
         
     }
 
