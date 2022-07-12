@@ -21,12 +21,18 @@ class CommentController
         echo "Page crud comment back office";
         $comment = new CommentModel();
         // $comments = $comment->getAllComment();
-        $comments = $comment->getAllComment();
+        $comments = $comment->getAllCommentVerified();
 
+        $commentsUnverified = $comment->getAllCommentUnverified();
+
+        $commentsReported = $comment->getAllCommentReported();
+    
         // print_r($comments);
         //Lister les commentaires à valider et ceux non validé, à faire dans la vue?
         $view = new View("Comment/list",'back');
         $view->assign("comments", $comments);
+        $view->assign("commentsUnverified",$commentsUnverified);
+        $view->assign("commentsReported",$commentsReported);
      
         
     }
@@ -115,6 +121,37 @@ class CommentController
         }
 
         
+    }
+
+
+    public function reportComment()
+    {
+        echo "page report comment <br>";
+        $comment = new CommentModel();
+        if(!empty($_POST)){
+            $result = Verificator::checkForm($comment->getReportCommentForm(), $_POST);
+            if(empty($result)){
+                echo "formulaire validé <br>";
+
+                if(is_numeric($_POST['comment_id'])){
+                    // $roleSecurity = new RoleSecurity();
+                    echo "comment to be reported :".$_POST['comment_id'];
+
+                    $comment = $comment->findById($_POST['comment_id']); //On récupère le commentaire par son ID
+                    if($comment){
+
+                        if($comment->getReported() === 1){ //si l'utilisateur est déja report, rediriger
+                            header('Location: /testcommentpage?fail');
+                        }else{
+                            $comment->setReported();
+                            $comment->save();
+                            header('Location: /testcommentpage?sucess');
+                        }
+                    }                   
+                }
+
+            }
+        }
     }
 
 }

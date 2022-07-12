@@ -35,12 +35,14 @@ class MainController {
 
     public function samplepage()
     {
+        //C'est une route de test
         $comment = new CommentModel();
         // $page = new PageModel();
         // $page->setId(1);
         $page = new \stdClass();
-        $page->id = 2;
+        $page->id = 1;
 
+        //je simule le fait que ça soit la page avec l'id 2
         $comments = $comment->getAllCommentByPageId($page->id);
         $view = new View("sample");
 

@@ -129,6 +129,36 @@ class Comment extends Sql
         return $comments;
     }
 
+    public function getAllCommentUnverified()
+    {
+        $comments = $this->getAllWhere(['id','id_page','id_user','content','verified','reported'],['verified',0]);
+        // $allUsers = [];
+        // foreach($users as $user){
+        //     $allUsers[$user->getId()] = $user->getFirstname().' - '.$user->getLastname().' - '.$user->getEmail();
+        // }
+        return $comments;
+    }
+
+    public function getAllCommentVerified()
+    {
+        $comments = $this->getAllWhere(['id','id_page','id_user','content','verified','reported'],['verified',1]);
+        // $allUsers = [];
+        // foreach($users as $user){
+        //     $allUsers[$user->getId()] = $user->getFirstname().' - '.$user->getLastname().' - '.$user->getEmail();
+        // }
+        return $comments;
+    }
+
+    public function getAllCommentReported()
+    {
+        $comments = $this->getAllWhere(['id','id_page','id_user','content','verified','reported'],['reported',1]);
+        // $allUsers = [];
+        // foreach($users as $user){
+        //     $allUsers[$user->getId()] = $user->getFirstname().' - '.$user->getLastname().' - '.$user->getEmail();
+        // }
+        return $comments;
+    }
+
     public function getRemoveCommentForm(): array
     {
         return [
@@ -164,6 +194,25 @@ class Comment extends Sql
             ]
         ];
     }
+
+    public function getReportCommentForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"comment-report",
+                "submit"=>"Signaler"
+            ],
+            'inputs'=>[
+                "comment_id"=>[
+                    "type"=>"hidden",
+                    "required"=>true,
+                    "value" => $this->getId()
+                ]
+            ]
+        ];
+    }
+
 
 
     public function getAddCommentForm($pageId): array

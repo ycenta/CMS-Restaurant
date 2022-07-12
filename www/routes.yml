@@ -133,6 +133,12 @@
   role:
     - admin
 
+/comment-report:
+  controller: comment
+  action: reportComment
+  role:
+    - none
+
 /testcommentpage:
   controller: main
   action: samplepage
