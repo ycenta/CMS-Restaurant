@@ -107,3 +107,34 @@
   action: editUser
   role:
     - admin
+
+/comments:
+  controller: comment
+  action: comments
+  role:
+    - admin
+
+/comment-remove:
+  controller: comment
+  action: removeComment
+  role:
+    - admin
+
+/comment-add:
+  controller: comment
+  action: addComment
+  role:
+    - user
+    - admin
+
+/comment-activate:
+  controller: comment
+  action: activateComment
+  role:
+    - admin
+
+/testcommentpage:
+  controller: main
+  action: samplepage
+  role:
+    - none

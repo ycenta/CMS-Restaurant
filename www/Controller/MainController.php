@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Core\View;
 use App\Core\Auth;
+use App\Model\Comment as CommentModel;
+use App\Model\Page as PageModel;
 
 
 class MainController {
@@ -31,6 +33,21 @@ class MainController {
         $view = new View("contact");
     }
 
+    public function samplepage()
+    {
+        $comment = new CommentModel();
+        // $page = new PageModel();
+        // $page->setId(1);
+        $page = new \stdClass();
+        $page->id = 2;
 
+        $comments = $comment->getAllCommentByPageId($page->id);
+        $view = new View("sample");
+
+        $view->assign("comment", $comment);
+        $view->assign("page", $page);
+        $view->assign("comments", $comments);
+
+    }
 
 }
