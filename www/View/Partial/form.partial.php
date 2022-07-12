@@ -1,4 +1,4 @@
-<form method="<?= $data["config"]["method"]??"POST" ?>"  action="<?= $data["config"]["action"]??"" ?>">
+<form method="<?= $data["config"]["method"]??"POST" ?>"  action="<?= $data["config"]["action"]??"" ?>" <?= isset($data['inputs']['picture'])?'enctype="multipart/form-data"':'' ?>>
 
     <?php foreach ($data["inputs"] as $name=>$input) :?>
 
@@ -8,6 +8,14 @@
         <label for="<?= $input['label'];?>"><?= $input['label'];?> :</label>
 
     <?php };?>
+
+    <?php 
+        if(isset($input['type'])){
+            if($input['type'] == 'file'){ 
+                echo '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />';
+            }
+        }
+    ?>
 
     <?php if(!isset($input['radiolist'])){ ?>
 

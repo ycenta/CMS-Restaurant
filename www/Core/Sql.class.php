@@ -143,7 +143,7 @@ abstract class Sql
         if($this->class){
             $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,$this->class);
         }else{
-            $resultQuery = $query->fetchAll();
+            $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,get_called_class());
         }
         // $objectsArray = [];
         // foreach($resultQuery as $result){

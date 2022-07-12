@@ -107,3 +107,27 @@
   action: editUser
   role:
     - admin
+
+/products:
+  controller: product
+  action: products
+  role:
+    - admin
+
+/product-register:
+  controller: product
+  action: registerProduct
+  role:
+    - admin
+
+/product:
+  controller: product
+  action: showProduct
+  role:
+    - admin
+
+/product-remove:
+  controller: product
+  action: removeProduct
+  role:
+    - admin
