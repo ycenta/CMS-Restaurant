@@ -150,7 +150,7 @@ class Product extends Sql
                     "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"pictureForm",
-                    "error"=>"Votre image ne doit pas dépasser les 2 Mo.",
+                    "error"=>"Image incorrecte.",
                     ],
                 "description"=>[
                     "type"=>"textarea",
@@ -187,7 +187,6 @@ class Product extends Sql
                 "name"=>[
                     "type"=>"text",
                     "placeholder"=>"Nom du produit...",
-                    "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"nameForm",
                     "error"=>"Nom incorrect",
@@ -196,16 +195,13 @@ class Product extends Sql
                 "picture"=>[
                     "type"=>"file",
                     "placeholder"=>"Image du produit",
-                    "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"pictureForm",
-                    "error"=>"Votre image ne doit pas dépasser les 2 Mo.",
-                    "value" => $this->getPicture()
+                    "error"=>"Image incorrecte",
                 ],
                 "description"=>[
                     "type"=>"textarea",
                     "placeholder"=>"Description du produit...",
-                    "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"descriptionForm",
                     "max"=>500,
@@ -242,6 +238,16 @@ class Product extends Sql
                     "error"=>"Catégorie incorrecte.",
                     "value"=>$this->getIdCategory()
                 ]
+            ],
+            'images'=>[
+                "oldPicture"=>[
+                    "type"=>"img",
+                    "from"=>"Public/img/product/",
+                    "input"=>"picture",
+                    "class"=>"inputForm",
+                    "id"=>"oldPictureForm",
+                    "value" => $this->getPicture()
+                ],
             ]
         ];
     }
@@ -264,21 +270,25 @@ class Product extends Sql
         ];
     }
 
-    public function setProduct(){
+    public function setProduct($actual_product=''){
 
         $this->setName($_POST["name"]) ;
         $this->setDescription($_POST["description"]) ;
         $this->setPrice($_POST["price"]) ;
-        $this->setStock(0);
-        $this->setIdCategory(1);  
+        isset($_POST["stock"]) ? $this->setStock($_POST["stock"]) : $this->setStock(0);
+        isset($_POST["idCategory"]) ? $this->setIdCategory($_POST["idCategory"]) : $this->setIdCategory(1);  
 
         if(isset($_FILES["picture"]) && $_FILES["picture"]['error'] != 4){
-            if ($_FILES["picture"]["size"] > 2097152) {
-                echo "La taille ne l'image ne doit pas dépasser 2Mo";  
-            } else {
+            if(is_uploaded_file($_FILES["picture"]["tmp_name"])){
                 $fileName = uniqid("product_", true) . "_" . $_FILES["picture"]["name"];
                 $tmp_name = "Public/img/product/" . $fileName;
                 move_uploaded_file($_FILES["picture"]["tmp_name"], $tmp_name);
+
+                if (!empty($actual_product)) {
+                    if(file_exists("Public/img/product/" . $actual_product->getPicture())){
+                        unlink("Public/img/product/" . $actual_product->getPicture());
+                    }
+                }
 
                 $this->setPicture($fileName);
             }

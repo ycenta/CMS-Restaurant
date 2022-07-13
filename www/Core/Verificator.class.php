@@ -17,8 +17,18 @@ class Verificator
         foreach ($config['inputs'] as $name=>$input){
             
             if($input["type"] == "file"){
-                if(!empty($files) && !self::checkFile($files, $name)){
-                    $result[] = "Le fichier ".$name." doit être au format JPEG, JPG ou PNG.";
+                if(!empty($files) && $files[$name]["error"] != 4){
+                    if (!self::checkFile($files, $name)) {
+                        $result[] = "Le fichier ".$name." doit être au format JPEG, JPG ou PNG.";
+                    }
+
+                    if ($files[$name]["size"] > 2097152) {
+                        $result[] = "La taille du fichier ". $name . " ne doit pas dépasser 2 Mo";  
+                    }
+                } 
+
+                if (empty($files) && !empty($input["required"])) {
+                    $result[] = "Le champs ".$name." n'existe pas";
                 }
             } else {        
                 if(!isset($data[$name]) ){

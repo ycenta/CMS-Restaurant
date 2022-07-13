@@ -17,8 +17,27 @@
         }
     ?>
 
-    <?php if(!isset($input['radiolist'])){ ?>
+    <?php
+        if(isset($input['type']) && $input['type'] == 'file' && isset($data["images"])){
+            foreach ($data["images"] as $img_name=>$img) {
+                if ($img["input"] == $name) {
+                    echo '<img src="' . $img["from"] . $img["value"] . '"><br>';
+                }
+            }
 
+        } 
+
+        if(isset($input["type"]) && $input["type"] == "textarea"){ ?>
+
+            <textarea
+                name="<?= $name?>"
+                placeholder="<?= $input["placeholder"]??"" ?>"
+                id="<?= $input["id"]??"" ?>"
+                class="<?= $input["class"]??"" ?>"
+                <?= empty($input["required"])?"":'required="required"' ?>
+            ><?= $input["value"]??"" ?></textarea><br>
+
+        <?php } else if(!isset($input['radiolist'])){ ?>
    
         <input
                 type="<?= $input["type"]??"text" ?>"

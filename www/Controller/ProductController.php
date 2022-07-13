@@ -16,15 +16,21 @@ class ProductController {
     {
         $product = new ProductModel();
 
-            $view = new View("Product/register");
+        $view = new View("Product/register");
 
-            $view->assign("product", $product);
+        $view->assign("product", $product);
 
-            if( !empty($_POST)){
+        if( !empty($_POST)){
+            $result = Verificator::checkForm($product->getRegisterForm(), $_POST, $_FILES);
 
+            if (empty($result)){
                 $product->setProduct();
-                $product->save();      
-            }
+                $product->save();
+                echo "<br>Produit enregistré";
+            } else {
+                var_dump($result);
+            }    
+        }
     }
 
     public function products()
@@ -85,27 +91,9 @@ class ProductController {
                 $result = Verificator::checkForm($product->getEditProductForm(), $_POST, $_FILES);
 
                 if(empty($result)){
-
-                    // A adapter avec les catégories. 
-
-                    if($product){  
-                        $product->setName($_POST["name"]) ;
-                        $product->setDescription($_POST["description"]) ;
-                        $product->setPrice($_POST["price"]) ;
-                        $product->setStock($_POST["stock"]);
-                        $product->setIdCategory($_POST["idCategory"]);  
-
-                        $fileName = uniqid("product_", true) . "_" . $_FILES["picture"]["name"];
-                        $tmp_name = "Public/img/product/" . $fileName;
-                        move_uploaded_file($_FILES["picture"]["tmp_name"], $tmp_name);
-                        
-                        if(file_exists("Public/img/product/" . $product->getPicture())){
-                            unlink("Public/img/product/" . $product->getPicture());
-                        }
-                        $product->setPicture($fileName);                
-                        $product->save();
-                        echo "<br>Compte mis à jour";
-                    }   
+                    $product->setProduct($product);                
+                    $product->save();
+                    echo "<br>Produit mis à jour";
                 }
             }
 
