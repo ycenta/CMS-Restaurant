@@ -150,6 +150,18 @@ class Category extends Sql
 
         return $categories;
     }
+
+    public function getCategoriesInArray()
+    {
+        $categories = $this->getAll(['id','name']);
+
+        $categoriesList = [];
+        foreach ($categories as $category) {
+            $categoriesList += [$category->getName()=>$category->getId()];
+        }
+
+        return $categoriesList;
+    }
  
 
 }

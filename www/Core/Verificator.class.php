@@ -40,6 +40,10 @@ class Verificator
                     $result[] = "Le champs ".$name." ne peut pas être vide";
                 }
 
+                if(in_array($input["type"], ["number", "radio", "select"]) && !self::checkNumber($data[$name])){
+                    $result[] = $input["error"];
+                }
+
                 if($input["type"] == "email" && !self::checkEmail($data[$name]) ){
                     $result[] = $input["error"];
                 }
@@ -111,6 +115,11 @@ class Verificator
             || strlen(str_replace("#", "", $color)) == 3)
             && (preg_match("/([a-fA-F0-9]){6}/", $color, $match)
             || preg_match("/([a-fA-F0-9]){3}/", $color, $match));
+    }
+
+    public static function checkNumber($value): bool
+    {
+        return preg_match("/(\d)+/", $value, $match);
     }
 
     public static function checkHiddenFieldInt($hidden): bool
