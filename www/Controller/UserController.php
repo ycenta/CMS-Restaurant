@@ -43,7 +43,7 @@ class UserController {
 
                    
                     $_SESSION['auth'] = $user->getId();
-                    $_SESSION['token'] = $user->getAuthToken();
+                    $_SESSION['auth_token'] = $user->getAuthToken();
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['firstname'] = $user->getFirstname();
                     $_SESSION['role'] = $roleSecurity->getRoleNameById($user->getRoleId());

@@ -1,46 +1,43 @@
 <?php
 
 namespace App\Middleware;
-
 use App\Core\Middleware;
+use App\Security\UserSecurity;
+use App\Security\RoleSecurity;
 
-class AuthMiddleware extends MiddleWare
+
+
+class AuthMiddleware 
 {
     public function __construct()
     {
-        if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
+    
     }
 
-    //Function to check if user is logged in by checking if session auth is set
     public function middleware()
     {
 
-        //Check if session auth is set
-        if(!isset($_SESSION['auth'])){
-            //Redirect to login page
-            header('Location: /login');
-            exit();
-        }
-    }
+      
+        if(isset($_SESSION['auth_token'])){ // Si l'user est connecté, on verifie son token avec celui en base
+            $userSecurity = new UserSecurity();
+            $roleSecurity = new RoleSecurity();
 
-    //Function to check if has the admin role
-    public function isAdmin()
-    {
-        //Check if session auth is set
-        if(!isset($_SESSION['auth'])){
-            //Redirect to login page
-            header('Location: /login');
-            exit();
+            $user = $userSecurity->findByAuthToken($_SESSION['auth_token']);
+
+            if($user){ //Si on a bien un utilisateur avec ce token de connexion, on raffraichi les champs en sessions 
+                $_SESSION['auth'] = $user->getId();
+                $_SESSION['email'] = $user->getEmail();
+                $_SESSION['firstname'] = $user->getFirstname();
+                $_SESSION['role'] = $roleSecurity->getRoleNameById($user->getRoleId());
+
+            }else{ //Sinon on deconnecte & on redirige vers le formulaire de connexion
+                session_destroy();
+                header('Location: /login');
+            }
+           
         }
-        //Check if user has admin role
-        if($_SESSION['role'] != 'admin'){
-            //Redirect to login page
-            $error = "Forbidden";
-            header('Location: /');
-            exit();
-        }
+
+        // echo "MiddlewareAuth lancé";
     }
 
 }

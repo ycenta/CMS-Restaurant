@@ -35,6 +35,13 @@ class UserSecurity extends Sql
       return $result;
     }
 
+    public function findByAuthToken(string $auth_token)
+    {
+       $result = $this->findByCustom("auth_token",$auth_token);
+      
+      return $result;
+    }
+
     public function findByResetToken(string $reset_token)
     {
        $result = $this->findByCustom("reset_token",$reset_token);
