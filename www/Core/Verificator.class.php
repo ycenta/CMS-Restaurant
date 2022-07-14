@@ -104,8 +104,13 @@ class Verificator
 
     public static function checkHexaColor($color): bool
     {
-        return strlen(str_replace("#", "", $color)) <= 6
-            && strlen(str_replace("#", "", $color)) > 0;
+
+        return (count(explode("#", $color)) == 1
+            || count(explode("#", $color)) == 2)
+            &&(strlen(str_replace("#", "", $color)) == 6
+            || strlen(str_replace("#", "", $color)) == 3)
+            && (preg_match("/([a-fA-F0-9]){6}/", $color, $match)
+            || preg_match("/([a-fA-F0-9]){3}/", $color, $match));
     }
 
     public static function checkHiddenFieldInt($hidden): bool

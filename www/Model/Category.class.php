@@ -81,7 +81,7 @@ class Category extends Sql
                     "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"colorForm",
-                    "error"=>"La couleur doit être une valeur hexadécimale.",
+                    "error"=>"La couleur doit être une valeur hexadécimale (3 ou 6 caractères, préfixés ou non du \"#\".",
                 ],
             ]
         ];
@@ -110,7 +110,7 @@ class Category extends Sql
                     "placeholder"=>"Couleur de la catégorie...",
                     "class"=>"inputForm",
                     "id"=>"colorForm",
-                    "error"=>"La couleur doit être une valeur hexadécimale.",
+                    "error"=>"La couleur doit être une valeur hexadécimale (3 ou 6 caractères, préfixés ou non du \"#\".",
                     "value"=>"#" . $this->getColor()
                 ],
             ]
