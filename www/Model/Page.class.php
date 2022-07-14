@@ -93,7 +93,6 @@ class Page extends Sql
 
     public function getAll()
     {
-
         $sql = "SELECT * FROM esgi_page";
         $query = $this->pdo->prepare($sql);
         $query->execute();
@@ -107,6 +106,15 @@ class Page extends Sql
             $query->execute(['slug' => $this->slug]);
             $page = $query->fetchObject(get_called_class());
             return $page;
+    }
+    public function delete(int $id): bool
+    {
+        if($id){
+            $sql = "DELETE FROM esgi_page WHERE id = ?";
+            $queryPrepared = $this->pdo->prepare($sql);
+            $passed = $queryPrepared->execute( [$id] );
+            return $passed; //Return true si requête reussie, sinon false
+        }
     }
     //     $pages = [];
     //     foreach ($result as $row) {
@@ -128,7 +136,7 @@ class Page extends Sql
             "config"=>[
                 "method"=>"POST",
                 "action"=>"",
-                "create"=>"Crée un page"
+                "create"=>"Crée une page"
             ],
             'inputs'=>[
                 "name"=>[

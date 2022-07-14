@@ -1,11 +1,11 @@
 <html>
-    <head>
-        <title>Read</title>
+   <head>
+      <title>Read</title>
     </head>
     <body>
-        <h1>Read page</h1>
+        <h1>Read</h1>
         <p>
-            <?php var_dump($routes)?>
+            <?php echo $page->getContent(); ?>
         </p>
     </body>
 </html>
