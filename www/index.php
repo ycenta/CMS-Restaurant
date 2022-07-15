@@ -5,7 +5,6 @@ session_start();
 require "conf.inc.php";
 
 
-
 function myAutoloader($class)
 {
     // $class => CleanWords
@@ -18,6 +17,9 @@ function myAutoloader($class)
 
 spl_autoload_register("App\myAutoloader");
 
+use App\Core\Middleware;
+
+Middleware::start();
 
 
 //Réussir à récupérer l'URI
@@ -36,29 +38,7 @@ if( empty($routes[$uri]) ||  empty($routes[$uri]["controller"])  ||  empty($rout
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));
 $action = strtolower($routes[$uri]["action"]);
-$role = array_map('strtolower', ($routes[$uri]["role"]));
 
-
-/*
- *
- *  Vérfification de la sécurité, est-ce que la route possède le paramètr rôle
- *  Si oui est-ce que l'utilisation a les droits et surtout est-ce qu'il est connecté ?
- *  Sinon rediriger vers la home ou la page de login
- *
- */
-
-if(!in_array('none', $role)){
-
-    if(isset($_SESSION['role'])){
-
-       if(!in_array($_SESSION['role'],$role)){
-        header('Location: /');
-       }
-
-    }else{
-        header('Location: /login');
-    }
-}
 
 $controllerFile = "Controller/".$controller."Controller.php";
 if(!file_exists($controllerFile)){
