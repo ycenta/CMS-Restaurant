@@ -52,14 +52,18 @@
   role: 
     - none
 
+/deletepage:
+  controller: page
+  action: deletepage
+  role: 
+    - none
+
+
 /editpage:
   controller: page
   action: editpage
   role: 
     - none
-
-  
-
 
 /list:
   controller: page

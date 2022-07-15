@@ -12,7 +12,7 @@ class PageController {
 
     public function displayAllPages() {
         $cequetuveux = new Page();
-        $pages = $cequetuveux->getAll();
+        $pages = $cequetuveux->getAllPages();
         $view = new View('page/list');
         $view->assign('pages', $pages);
     }
@@ -45,7 +45,7 @@ class PageController {
         
     }
 
-    public function readPageBySlug()
+    public function readPage()
     {
         $page = new Page();
         $page = $page->selectBySlug($_GET["slug"]);
@@ -54,10 +54,10 @@ class PageController {
 
     }
 
-    public function updatePage()
+    public function editPage()
     {
         $page = new Page();
-        $page = $page->selectBySlug();
+        $page = $page->selectBySlug($_GET["slug"]);
         if( !empty($_POST)){
 
             $result = Verificator::checkForm($page->getCreationForm(), $_POST);
@@ -69,10 +69,18 @@ class PageController {
             $page->setContent($_POST["content"]);
             $page->setSlug(Slug::slugify($_POST["title"]));
             
-            echo $page->getSlug();
             $page->save();
-
+            header("Location: /list");
+            }
+        $view = new View("Page/edit", "back");
+        $view->assign("page", $page);
     }
+    public function deletePage()
+    {
+        $page = new Page();
+        $page = $page->selectBySlug($_GET["slug"]);
+        $page->deleteBySlug();
+        header("Location: /list");
     }
 
 }

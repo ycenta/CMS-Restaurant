@@ -91,7 +91,7 @@ class Page extends Sql
         $this->content = strtolower(trim($content));
     }
 
-    public function getAll()
+    public function getAllPages()
     {
         $sql = "SELECT * FROM esgi_page";
         $query = $this->pdo->prepare($sql);
@@ -99,37 +99,22 @@ class Page extends Sql
         $pages = $query->fetchAll(\PDO::FETCH_CLASS, get_called_class());
         return $pages;
     }
-    public function selectBySlug()
+    public function selectBySlug($slug)
     { 
             $sql = "SELECT * FROM esgi_page WHERE slug = :slug";
             $query = $this->pdo->prepare($sql);
-            $query->execute(['slug' => $this->slug]);
+            $query->execute(['slug' => $slug]);
             $page = $query->fetchObject(get_called_class());
             return $page;
     }
-    public function delete(int $id): bool
+    public function deleteBySlug()
     {
-        if($id){
-            $sql = "DELETE FROM esgi_page WHERE id = ?";
-            $queryPrepared = $this->pdo->prepare($sql);
-            $passed = $queryPrepared->execute( [$id] );
-            return $passed; //Return true si requête reussie, sinon false
-        }
+         $sql = "DELETE FROM esgi_page WHERE slug = :slug";
+         $queryPrepared = $this->pdo->prepare($sql);
+        $passed = $queryPrepared->execute( ['slug' => $this->slug] );
+        return $passed; 
     }
-    //     $pages = [];
-    //     foreach ($result as $row) {
-    //         $page = new Page();
-    //         $page->setId($row['id']);
-    //         $page->setName($row['name']);
-    //         $page->setTitle($row['title']);
-    //         $page->setContent($row['content']);
-    //         $page->setSlug($row['slug']);
-    //         $pages[] = $page;
-    //     }
-    //     return $pages;
-    //     var_dump($pages);
-    // }
-
+    
     public function getCreationForm(): array
     {
         return [
