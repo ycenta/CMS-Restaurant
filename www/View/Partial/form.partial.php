@@ -37,7 +37,8 @@
                 <?= empty($input["required"])?"":'required="required"' ?>
             ><?= $input["value"]??"" ?></textarea><br>
 
-        <?php } else if(!isset($input['radiolist'])){ ?>
+        <?php } else if(!isset($input['radiolist']) && !isset($input['optionlist'])){ ?>
+
    
         <input
                 type="<?= $input["type"]??"text" ?>"
@@ -50,7 +51,30 @@
         >        <?php echo $input["type"]=='hidden' ? '' :'<br>' ;?>
 
 
-    <?php }else{  
+    <?php }else if(isset($input['optionlist'])){
+            echo '<br>'; ?>
+                
+
+            <select name="<?= $name?>" 
+                class="<?= $input["class"]??"" ?>" 
+                <?= empty($input["required"])?"":'required="required"' ?>
+            >
+            <?php
+            foreach($input['optionlist'] as $select_name =>$option){ 
+                var_dump($select_name);?>
+    
+                <option
+                    value="<?= $option??"" ?>"
+                    <?= (isset($input['optionSelected']) && $input['optionSelected'] == $option) ? 'selected':''  ?>
+                >
+                    <?= $select_name; ?>
+                </option>  
+    <?php
+            }; ?>
+            </select><br>
+
+    <?php }else{
+
             echo '<br>';
             foreach($input['radiolist'] as $nameradio =>$radio){ 
                 

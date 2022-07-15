@@ -3,6 +3,8 @@ namespace App\Model;
 
 use App\Core\Sql;
 use App\Core\QueryBuilder;
+use App\Model\Category as CategoryModel;
+use App\Security\CategorySecurity;
 
 class Product extends Sql
 {
@@ -177,6 +179,8 @@ class Product extends Sql
 
     public function getEditProductForm(): array
     {
+        $categories = new CategoryModel;
+
         return [
             "config"=>[
                 "method"=>"POST",
@@ -228,15 +232,14 @@ class Product extends Sql
                     "error"=>"Quantité incorrecte.",
                     "value"=>$this->getStock()
                 ],
-                "idCategory"=>[
-                    "type"=>"number",
-                    "placeholder"=>"Catégorie du produit...",
+                "category"=>[
+                    "type"=>"select",
                     "class"=>"inputForm",
-                    "id"=>"idCategoryForm",
-                    "min"=>0,
-                    "step"=>1,
+                    "id"=>"categoryForm",
+                    "label"=>"Catégorie",
                     "error"=>"Catégorie incorrecte.",
-                    "value"=>$this->getIdCategory()
+                    "optionlist"=>$categories->getCategoriesInArray(),
+                    "optionSelected"=>$this->getIdCategory()
                 ]
             ],
             'images'=>[
@@ -276,7 +279,18 @@ class Product extends Sql
         $this->setDescription($_POST["description"]) ;
         $this->setPrice($_POST["price"]) ;
         isset($_POST["stock"]) ? $this->setStock($_POST["stock"]) : $this->setStock(0);
-        isset($_POST["idCategory"]) ? $this->setIdCategory($_POST["idCategory"]) : $this->setIdCategory(1);  
+
+        if(isset($_POST["category"])){
+            $categorySecurity = new CategorySecurity;
+            $category = $categorySecurity->findById($_POST["category"]);
+
+            if($category){
+                $this->setIdCategory($_POST["category"]);
+            }
+
+        }else{
+            $this->setIdCategory(1);
+        } 
 
         if(isset($_FILES["picture"]) && $_FILES["picture"]['error'] != 4){
             if(is_uploaded_file($_FILES["picture"]["tmp_name"])){
