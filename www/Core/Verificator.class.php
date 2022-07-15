@@ -44,6 +44,10 @@ class Verificator
                     $result[] = $input["error"];
                 }
 
+                if($input["type"] == "color" && !self::checkHexaColor($data[$name])){
+                    $result[] = $input["error"];
+                }
+
                 if(isset($input["confirm"])){
                     if($input["type"] == "password" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
                         $result[] = $input["error"];
@@ -96,6 +100,17 @@ class Verificator
 
         return mime_content_type($file[$name]["tmp_name"]) == "image/jpeg"
             || mime_content_type($file[$name]["tmp_name"]) == "image/png";
+    }
+
+    public static function checkHexaColor($color): bool
+    {
+
+        return (count(explode("#", $color)) == 1
+            || count(explode("#", $color)) == 2)
+            &&(strlen(str_replace("#", "", $color)) == 6
+            || strlen(str_replace("#", "", $color)) == 3)
+            && (preg_match("/([a-fA-F0-9]){6}/", $color, $match)
+            || preg_match("/([a-fA-F0-9]){3}/", $color, $match));
     }
 
     public static function checkHiddenFieldInt($hidden): bool

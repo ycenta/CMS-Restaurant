@@ -167,3 +167,27 @@
   action: removeProduct
   role:
     - admin
+
+/categories:
+  controller: category
+  action: categories
+  role:
+    - admin
+
+/category-register:
+  controller: category
+  action: registerCategory
+  role:
+    - admin
+
+/category:
+  controller: category
+  action: showCategory
+  role:
+    - admin
+
+/category-remove:
+  controller: category
+  action: removeCategory
+  role:
+    - admin
