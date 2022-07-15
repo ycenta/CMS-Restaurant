@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Comment as CommentModel;
 use App\Core\View;
 use App\Core\Verificator;
+use App\Model\Page as PageModel;
 
 
 
@@ -111,13 +112,28 @@ class CommentController
                 return "error";
             }
 
+            //Verifier si la page existe avant
             $comment->setIdPage($_POST['page_id']);
             $comment->setIdUser($_SESSION['auth']);
             $comment->setContent($_POST['content']);
             $comment->setVerified(0);
             $comment->setReported(0);
             $comment->save();
-            echo "redirection to page id: ".$_POST['page_id'];
+
+            $page =  new PageModel();
+            $page =  $page->findById($_POST['page_id']);
+
+            print_r($page);
+            if($page){
+                $redirectUrl = $page->getSlug();
+                header('Location: /readpage?slug='.$redirectUrl);
+            }else{
+                // header('Location: /');
+                echo "redirige vers /";
+            }
+            
+            // echo "redirection to page id: ".$_POST['page_id'];
+
         }
 
         
@@ -140,12 +156,25 @@ class CommentController
                     $comment = $comment->findById($_POST['comment_id']); //On récupère le commentaire par son ID
                     if($comment){
 
-                        if($comment->getReported() === 1){ //si l'utilisateur est déja report, rediriger
-                            header('Location: /testcommentpage?fail');
+                        //On récupère la page du commentaire pour rediriger dessus
+                        $page =  new PageModel();
+                        $page =  $page->findById($comment->getIdPage());
+
+                        if($page){
+                            $redirectUrl = $page->getSlug();
+                            $redirectUrl = ('Location: /readpage?slug='.$redirectUrl);
                         }else{
+                             $redirectUrl = 'Location: /';
+                        }
+
+                        if($comment->getReported() === 1){ //si l'utilisateur a déja report
+                            //On redirige juste
+                            header($redirectUrl.'&?report=fail');
+                        }else{
+
                             $comment->setReported();
                             $comment->save();
-                            header('Location: /testcommentpage?sucess');
+                            header($redirectUrl.'&?report=sucess');
                         }
                     }                   
                 }

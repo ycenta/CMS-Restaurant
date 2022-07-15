@@ -6,6 +6,8 @@ use App\Core\Slug;
 use App\Model\Page;
 use App\Core\View;
 use App\Core\Verificator;
+use App\Model\Comment as CommentModel;
+
 
 
 class PageController {
@@ -47,10 +49,22 @@ class PageController {
 
     public function readPage()
     {
+
         $page = new Page();
         $page = $page->selectBySlug($_GET["slug"]);
-        $view = new View("Page/read", "back");
-        $view->assign("page", $page);
+        if($page){
+            $comment = new CommentModel();
+            $comments = $comment->getAllCommentByPageId($page->getId());
+
+            $view = new View("Page/read", "front");
+            $view->assign("page", $page);          
+            $view->assign("comment", $comment);
+            $view->assign("comments", $comments);
+
+        }else{
+            die('error 404');
+        }
+    
 
     }
 
@@ -79,7 +93,7 @@ class PageController {
     {
         $page = new Page();
         $page = $page->selectBySlug($_GET["slug"]);
-        $page->deleteBySlug();
+        $page->delete();
         header("Location: /list");
     }
 

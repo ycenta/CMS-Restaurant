@@ -115,6 +115,13 @@ class Page extends Sql
         return $passed; 
     }
     
+    public function findById(int $id)
+    {
+       $result = $this->findByCustom("id",$id);
+      
+        return $result;
+    }
+
     public function getCreationForm(): array
     {
         return [

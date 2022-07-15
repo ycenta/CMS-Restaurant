@@ -95,13 +95,18 @@ abstract class Sql
 
     }
     
-    public function delete(int $id): bool
+    public function delete(int $id = null): bool
     {
                
             if($id){
                 $sql = "DELETE FROM ".$this->table." WHERE id = ?";
                 $queryPrepared = $this->pdo->prepare($sql);
                 $passed = $queryPrepared->execute( [$id] );
+                return $passed; //Return true si requête reussie, sinon false
+            }else{
+                $sql = "DELETE FROM ".$this->table." WHERE id = ?";
+                $queryPrepared = $this->pdo->prepare($sql);
+                $passed = $queryPrepared->execute( [$this->id] );
                 return $passed; //Return true si requête reussie, sinon false
             }
     
