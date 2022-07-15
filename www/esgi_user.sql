@@ -136,6 +136,7 @@ CREATE TABLE mvcdocker2.esgi_comment (
     verified TINYINT NOT NULL,
     createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updatedAt timestamp on update CURRENT_TIMESTAMP NULL,
+    reported TINYINT NOT NULL,
      PRIMARY KEY (`id`),
      FOREIGN KEY (`id_page`) REFERENCES `esgi_page`(`id`),
      FOREIGN KEY (`id_user`) REFERENCES `esgi_user`(`id`)
