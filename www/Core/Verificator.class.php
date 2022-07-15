@@ -6,7 +6,7 @@ namespace App\Core;
 class Verificator
 {
 
-    public static function checkForm($config, $data): array
+    public static function checkForm($config, $data, $files=""): array
     {
         $result = [];
         //Le nb de inputs envoyés ?
@@ -16,32 +16,49 @@ class Verificator
 
         foreach ($config['inputs'] as $name=>$input){
             
-            if(!isset($data[$name]) ){
-                $result[] = "Le champs ".$name." n'existe pas";
-            }
+            if($input["type"] == "file"){
+                if(!empty($files) && $files[$name]["error"] != 4){
+                    if (!self::checkFile($files, $name)) {
+                        $result[] = "Le fichier ".$name." doit être au format JPEG, JPG ou PNG.";
+                    }
 
-            if(empty($data[$name]) && !empty($input["required"]) ){
-                $result[] = "Le champs ".$name." ne peut pas être vide";
-            }
+                    if ($files[$name]["size"] > 2097152) {
+                        $result[] = "La taille du fichier ". $name . " ne doit pas dépasser 2 Mo";  
+                    }
+                } 
 
-            if($input["type"] == "email" && !self::checkEmail($data[$name]) ){
-                $result[] = $input["error"];
-            }
+                if (empty($files) && !empty($input["required"])) {
+                    $result[] = "Le champs ".$name." n'existe pas";
+                }
+            } else {        
+                if(!isset($data[$name]) ){
+                    $result[] = "Le champs ".$name." n'existe pas";
+                }
+       
 
-            if(isset($input["confirm"])){
-                if($input["type"] == "password" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
+                if(empty($data[$name]) && !empty($input["required"]) ){
+                    $result[] = "Le champs ".$name." ne peut pas être vide";
+                }
+
+                if($input["type"] == "email" && !self::checkEmail($data[$name]) ){
                     $result[] = $input["error"];
                 }
-            }
-           
 
-            if(!empty($input["confirm"]) && $data[$name] != $data[$input["confirm"]]){
-                $result[] = $input["error"];
-            }
+                if(isset($input["confirm"])){
+                    if($input["type"] == "password" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
+                        $result[] = $input["error"];
+                    }
+                }
+               
 
-           // if($input["type"] == "string" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
-        //    $result[] = $input["error"];
-           // }
+                if(!empty($input["confirm"]) && $data[$name] != $data[$input["confirm"]]){
+                    $result[] = $input["error"];
+                }
+
+               // if($input["type"] == "string" && empty($input["confirm"]) && !self::checkPassword($data[$name]) ){
+            //    $result[] = $input["error"];
+               // }
+            }
 
 
 //pas sur de ça
@@ -72,6 +89,13 @@ class Verificator
             && preg_match("/[a-z]/", $password, $match)
             && preg_match("/[A-Z]/", $password, $match)
             ;
+    }
+
+    public static function checkFile($file, $name): bool
+    {
+
+        return mime_content_type($file[$name]["tmp_name"]) == "image/jpeg"
+            || mime_content_type($file[$name]["tmp_name"]) == "image/png";
     }
 
     public static function checkHiddenFieldInt($hidden): bool
