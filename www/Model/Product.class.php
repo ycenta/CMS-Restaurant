@@ -317,6 +317,13 @@ class Product extends Sql
 
         return $products;
     }
+
+    public function findById(int $id)
+    {
+       $result = $this->findByCustom("id",$id);
+      
+      return $result;
+    }
  
 
 }

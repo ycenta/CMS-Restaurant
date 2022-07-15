@@ -208,3 +208,9 @@
   action: removeCategory
   role:
     - admin
+
+/pageProduct:
+  controller: product
+  action: showPageProduct
+  role:
+    - none

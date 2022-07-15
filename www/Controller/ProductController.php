@@ -107,4 +107,24 @@ class ProductController {
       
     }
 
+    public function showPageProduct(){
+        echo "page produit";
+        $product = new ProductModel();
+        if(!is_numeric($_GET['id'])){
+            die('404 le produit n\'existe pas');
+        }
+
+        $product = $product->findById($_GET['id']);
+
+        if($product){
+            $view = new View("Product/show",'front');
+            $view->assign("product", $product);
+        }else{
+            die('404 le produit n\'existe pas');
+        }
+      
+        
+
+    }
+
 }
