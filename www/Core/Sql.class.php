@@ -10,6 +10,7 @@ abstract class Sql
     public $pdo;
     private $table;
     private $class;
+    public $last_insert_id;
 
     public function __construct(string $table = NULL, string $class = NULL)
     {
@@ -69,9 +70,8 @@ abstract class Sql
         }
 
         $queryPrepared = $this->pdo->prepare($sql);
-      
         $queryPrepared->execute( $columns );
-
+        $this->last_insert_id = $this->pdo->lastInsertId();
     }
 
     public function read()

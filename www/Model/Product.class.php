@@ -273,6 +273,24 @@ class Product extends Sql
         ];
     }
 
+    public function getAddProductToCart(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"addToCart",
+                "submit"=>"Ajouter au panier"
+            ],
+            'inputs'=>[
+                "product_id"=>[
+                    "type"=>"hidden",
+                    "required"=>true,
+                    "value" => $this->getId()
+                ]
+            ]
+        ];
+    }
+
     public function setProduct($actual_product=''){
 
         $this->setName($_POST["name"]) ;

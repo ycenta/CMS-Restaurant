@@ -214,3 +214,28 @@
   action: showPageProduct
   role:
     - none
+
+/addToCart:
+  controller: product
+  action: AddToCart
+  role:
+   - none
+
+/emptyCart:
+  controller: product
+  action: EmptyCart
+  role:
+   - none
+
+/shoppingCart:
+  controller: product
+  action: showCart
+  role:
+   - none
+
+/checkout:
+  controller: checkout
+  action: generateCheckout
+  role:
+    - user
+    - admin

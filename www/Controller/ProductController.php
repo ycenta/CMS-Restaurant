@@ -6,6 +6,7 @@ use App\Core\Sql;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Model\Product as ProductModel;
+use App\Model\Checkout as CheckoutModel;
 use App\Security\ProductSecurity;
 use App\Security\RoleSecurity;
 
@@ -122,9 +123,68 @@ class ProductController {
         }else{
             die('404 le produit n\'existe pas');
         }
-      
-        
 
+    }
+
+    public function AddToCart(){
+
+        if(!isset($_SESSION['cart'])){ // On verifie qu'on a bien le panier en session, sinon on le créée
+            $_SESSION['cart'] = [];
+        }
+
+        if(!empty($_POST)){
+            $product = new ProductModel();  
+            $result = Verificator::checkForm($product->getAddProductToCart(), $_POST, $_FILES);
+
+            if(empty($result)){
+
+                $product = $product->findById($_POST['product_id']);
+        
+                if($product){
+                    $_SESSION['cart'][] = $_POST['product_id'];
+                    header('Location: /pageProduct?id='.$_POST['product_id'].'&?success');
+                }
+
+            }
+        }else{
+            header('Location: /');
+        }
+      
+    }
+
+    public function EmptyCart(){
+        $_SESSION['cart']= [];
+    }
+
+    public function showCart(){
+
+        if(isset($_GET['success']) && $_GET['success'] === 'true'){
+            echo "Le panié a bien été acheté";
+        }
+        if(!isset($_SESSION['cart'])){ // On verifie qu'on a bien le panier en session, sinon on le créée
+            $_SESSION['cart'] = [];
+        }
+        $products = [];
+
+        foreach( $_SESSION['cart'] as $productInCart){
+            $product = new ProductModel();  
+            // echo "produit :".$productInCart."<br>";
+
+            $product = $product->findById($productInCart);
+        
+            if($product){
+                $products[] = $product;
+            }
+        }
+
+        $checkout = new CheckoutModel();  
+
+        $view = new View("cart/show",'front');
+        $view->assign("products", $products);
+        $view->assign("checkout", $checkout);
+
+       
+      
     }
 
 }

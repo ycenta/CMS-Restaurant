@@ -24,6 +24,8 @@ class MainController {
             echo "<br>";
             echo " Role actuel : ".$_SESSION['role'];
             echo "<br>";
+            echo "Cart :<br>";
+            print_r( $_SESSION['cart']);
         }
     }
 
