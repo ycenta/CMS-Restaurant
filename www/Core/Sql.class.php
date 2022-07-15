@@ -140,17 +140,48 @@ abstract class Sql
         }
         
         $query = $this->pdo->query($sql);
+       
         if($this->class){
             $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,$this->class);
         }else{
-            $resultQuery = $query->fetchAll();
+            $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,get_called_class());
         }
         // $objectsArray = [];
         // foreach($resultQuery as $result){
         //     $objectsArray[] = '';
         // }
         return $resultQuery;
+       
 
+    }
+
+    public function getAllWhere($columnsToSelect = null, $whereArray)
+    {
+        $queryBuilder = new QueryBuilder();
+        if($columnsToSelect != null && is_array($columnsToSelect)){ // verif if array
+            $sql = $queryBuilder
+            ->select($this->table, $columnsToSelect)
+            ->where($whereArray[0], $whereArray[1])
+            ->getQuery();
+        }else{
+            $sql = $queryBuilder
+            ->select($this->table, ['*'])
+            ->where($whereArray[0], $whereArray[1])
+            ->getQuery();
+        }
+        
+        $query = $this->pdo->query($sql);
+       
+        if($this->class){
+            $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,$this->class);
+        }else{
+            $resultQuery = $query->fetchAll($this->pdo::FETCH_CLASS,get_called_class());
+        }
+        // $objectsArray = [];
+        // foreach($resultQuery as $result){
+        //     $objectsArray[] = '';
+        // }
+        return $resultQuery;
 
     }
 

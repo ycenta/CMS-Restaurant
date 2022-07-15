@@ -124,6 +124,26 @@ ALTER TABLE `esgi_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
+--
+-- Creation de la table esgi_comment
+--
+
+CREATE TABLE mvcdocker2.esgi_comment (
+    id INT auto_increment NOT NULL,
+    id_page INT NOT NULL,
+    id_user INT NOT NULL,
+    content MEDIUMTEXT NOT NULL,
+    verified TINYINT NOT NULL,
+    createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updatedAt timestamp on update CURRENT_TIMESTAMP NULL,
+     PRIMARY KEY (`id`),
+     FOREIGN KEY (`id_page`) REFERENCES `esgi_page`(`id`),
+     FOREIGN KEY (`id_user`) REFERENCES `esgi_user`(`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=latin1
+COLLATE=latin1_swedish_ci;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
