@@ -12,7 +12,7 @@ class PageController {
 
     public function displayAllPages() {
         $cequetuveux = new Page();
-        $pages = $cequetuveux->getAll();
+        $pages = $cequetuveux->getAllPages();
         $view = new View('page/list');
         $view->assign('pages', $pages);
     }
@@ -33,7 +33,6 @@ class PageController {
             $page->setContent($_POST["content"]);
             $page->setSlug(Slug::slugify($_POST["title"]));
             
-
             echo $page->getSlug();
             $page->save();
 
@@ -46,14 +45,43 @@ class PageController {
         
     }
 
-    public function readPage() 
+    public function readPage()
     {
-        var_dump($_GET);
-        // $page = new Page();
-        // $page->selectBySlug($_GET["slug"]);
-        // $view = new View("Page/readPage/", "back");
-        // $view->assign("page", $page);
+        $page = new Page();
+        $page = $page->selectBySlug($_GET["slug"]);
+        $view = new View("Page/read", "back");
+        $view->assign("page", $page);
+
     }
-    
+
+    public function editPage()
+    {
+        $page = new Page();
+        $page = $page->selectBySlug($_GET["slug"]);
+        if( !empty($_POST)){
+
+            $result = Verificator::checkForm($page->getCreationForm(), $_POST);
+            if(!empty($result)){
+                return ("Error");
+            }
+            $page->setTitle($_POST["title"]);
+            $page->setName($_POST["name"]);
+            $page->setContent($_POST["content"]);
+            $page->setSlug(Slug::slugify($_POST["title"]));
+            
+            $page->save();
+            header("Location: /list");
+            }
+        $view = new View("Page/edit", "back");
+        $view->assign("page", $page);
+    }
+    public function deletePage()
+    {
+        $page = new Page();
+        $page = $page->selectBySlug($_GET["slug"]);
+        $page->deleteBySlug();
+        header("Location: /list");
+    }
+
 }
 ?>

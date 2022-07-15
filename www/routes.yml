@@ -40,13 +40,30 @@
   role: 
     - none
 
-/Newpage:
+/newpage:
   controller: page
-  action: NewPage
+  action: newpage
+  role: 
+    - none
 
-/readPage:
+/readpage:
   controller: page
-  action: readPage
+  action: readpage
+  role: 
+    - none
+
+/deletepage:
+  controller: page
+  action: deletepage
+  role: 
+    - none
+
+
+/editpage:
+  controller: page
+  action: editpage
+  role: 
+    - none
 
 /list:
   controller: page
