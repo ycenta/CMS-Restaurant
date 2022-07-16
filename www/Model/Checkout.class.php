@@ -86,4 +86,11 @@ class Checkout extends Sql
         ];
     }
 
+    public function getAllCheckout()
+    {
+        $checkouts = $this->getAll(['id','id_user']);
+
+        return $checkouts;
+    }
+
 }

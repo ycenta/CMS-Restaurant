@@ -501,6 +501,13 @@ class User extends Sql
         }
 
     }
+
+    public function findById(string $id)
+    {
+       $result = $this->findByCustom("id",$id);
+      
+      return $result;
+    }
  
 
 }

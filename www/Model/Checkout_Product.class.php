@@ -67,6 +67,17 @@ class Checkout_Product extends Sql
 
     }
 
+
+    public function getProductsOfCheckoutById($id_checkout){
+
+        $checkout_products = $this->getAllWhere(['id','id_checkout','id_product'],['id_checkout',$id_checkout]);
+        // $allUsers = [];
+        // foreach($users as $user){
+        //     $allUsers[$user->getId()] = $user->getFirstname().' - '.$user->getLastname().' - '.$user->getEmail();
+        // }
+        return $checkout_products;
+
+    }
  
 
 }

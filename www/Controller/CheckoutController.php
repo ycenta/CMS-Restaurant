@@ -6,6 +6,9 @@ use App\Core\Sql;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Model\Checkout as CheckoutModel;
+use App\Model\User as UserModel;
+
+use App\Model\Product as ProductModel;
 use App\Model\Checkout_Product as CheckoutProductModel;
 use App\Security\ProductSecurity;
 
@@ -18,12 +21,22 @@ class CheckoutController {
         if(!empty($_POST)){
             //Rajouter verification si le panier est vide, alors rien faire
             $checkout = new CheckoutModel();
+           
             $checkout_product = new CheckoutProductModel();
 
             $checkout->setCheckout();
             $checkout->save();
 
-            $checkout_product->addProductToCheckout($checkout->getLastInsertId(),$_SESSION['cart']);
+            $existingProduct = [];
+            foreach($_SESSION['cart'] as $productInCart){
+                $product = new ProductModel();
+                $product = $product->findById($productInCart);
+                if($product){
+                    $existingProduct[] = $product->getId();
+                }
+            }
+
+            $checkout_product->addProductToCheckout($checkout->getLastInsertId(),$existingProduct);
 
             echo "id: ".$checkout->getLastInsertId();
             echo "<br>";
@@ -32,7 +45,25 @@ class CheckoutController {
             $_SESSION['cart'] = [];
             header('Location: /shoppingCart?success=true');
 
+        }else{
+            header('Location: /shoppingCart');
         }
     }
 
+    public function showAllCheckout()
+    {
+        $checkout = new CheckoutModel();
+        $product = new ProductModel();
+        $user = new UserModel();
+
+        $checkouts = $checkout->getAllCheckout();
+
+        $checkout_products = new CheckoutProductModel();
+
+        $view = new View("Checkout/list",'back');
+        $view->assign("checkouts", $checkouts);
+        $view->assign("checkout_products", $checkout_products);
+        $view->assign("product", $product);
+        $view->assign("user", $user);
+    }
 }

@@ -37,7 +37,6 @@ class ProductController {
     public function products()
     {
         
-        echo "Page crud Products back office";
         $product = new ProductModel();
         $products = $product->getAllProducts();
 
@@ -82,7 +81,6 @@ class ProductController {
     }
 
     public function showProduct(){
-        echo "page edit produit par admin<br>";
         if(!empty($_GET)){
             $productSecurity = new ProductSecurity();
             $product = $productSecurity->findById($_GET['id']);
