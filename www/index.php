@@ -4,6 +4,9 @@ namespace App;
 session_start();
 require "conf.inc.php";
 
+if (empty($_SESSION['csrf'])) { //csrf par session
+    $_SESSION['csrf'] = bin2hex(random_bytes(32));
+}
 
 function myAutoloader($class)
 {

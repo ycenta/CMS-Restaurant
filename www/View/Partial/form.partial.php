@@ -94,6 +94,11 @@
             };
         }; ?>     
     <?php endforeach;?>
-
+    <?php
+        //Si on fait un csrf par formulaire (embettant pour les gens qui reviennent en arrière/refresh)
+       //$_SESSION['csrf'] = bin2hex(random_bytes(32));
+       $csrf = $_SESSION['csrf'];
+       echo "<input name='csrf' type='hidden' value='$csrf'>";
+    ?>
     <input <?= (isset($data["config"]["buttonClass"]) ? 'class="'.$data["config"]["buttonClass"].'"' :''); ?> type="submit" value="<?= $data["config"]["submit"]??"Valider" ?>">
 </form>

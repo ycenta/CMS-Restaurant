@@ -10,8 +10,19 @@ class Verificator
     {
         $result = [];
         //Le nb de inputs envoyés ?
-        if( count($data) != count($config['inputs'])){
-            die("Tentative de hack !!!!");
+
+        if (!empty($_POST['csrf'])) {
+            if (hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+                  //
+            } else {
+                die("Tentative de hack CSRF !!!!");
+            }
+        }else{
+            die("Tentative de hack CSRF !!!!");
+        }
+
+        if( count($data) != count($config['inputs'])+1){
+            exit("Tentative de hack !!!!");
         }
 
         foreach ($config['inputs'] as $name=>$input){
