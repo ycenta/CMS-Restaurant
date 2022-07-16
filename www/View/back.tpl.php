@@ -24,7 +24,9 @@
 					<li><a href="/dashboard"> <i class="fa-solid fa-house"></i> </a></li> 
 					 <li><a href="/checkouts"><i class="fa-solid fa-dollar-sign"></a></i></li> 
 					 <li><a href="/products"><i class="fa-solid fa-box"></a></i> </li>
+					 <li><a href="/categories"><i class="fa-solid fa-tags"></i></a> </li>
 					<li><a href="/users"> <i class="fa-solid fa-user"></i></a> </li>
+					<li> <a href="/comments"><i class="fas fa-comment"></i> </a> </li>
 					<li> <a href="/list"><i class="fa-solid fa-file"></i> </a> </li>
 					<li> <i class="fa-solid fa-gear"></i> </li>
 					</ul>
