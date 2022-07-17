@@ -190,6 +190,20 @@ class UserController {
             if($_POST){
                 // print_r($_POST);
                 $resultProfil = Verificator::checkForm($user->getProfileForm(), $_POST);
+                    //rajouter verif par mail
+                    //if $user->getMail != $_POST['email] alors on change
+                        //On verifie d'abord si le mail est déja pris
+                        //$userCheckmail = $user->findByUsermail($_POST['email])
+                        // if($userCheckmail){
+                        //     //
+                        // }else{
+                        //     $user->setEmail($_POST['email']);
+                        // }
+                        
+                //faire Verificator::secureString($_POST['firstname']) ?
+                $user->setFirstname($_POST['firstname']);
+                $user->setLastname($_POST['lastname']);
+                $user->save();
             }
             $view = new View("profil");
             $view->assign("user", $user);

@@ -138,7 +138,14 @@ class Verificator
         //
     }
 
-
-
+    public static function secureString($string)
+    {
+        //htmlspecialchars && addslashes
+    }
+    
+    public static function secureInt($int)
+    {
+        // is numeric && is int
+    }
 
 }
