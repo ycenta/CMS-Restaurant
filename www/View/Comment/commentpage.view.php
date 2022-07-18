@@ -3,7 +3,7 @@
     <?php foreach ($comments as $comment): ?>
         <?php if($comment->getVerified() === 1): ?>
         <li><p>Utilisateur: <?= $comment->getIdUser() ;?></p>
-            <span><?= $comment->getContent()?> <div id="signaler" style="display:inline-block" ><?= $this->includePartial("form", $comment->getReportCommentForm()) ?></div></span>         
+            <span><?= stripslashes($comment->getContent())?> <div id="signaler" style="display:inline-block" ><?= $this->includePartial("form", $comment->getReportCommentForm()) ?></div></span>         
         </li>
     <?php endif; ?>
     <?php endforeach; ?>

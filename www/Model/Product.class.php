@@ -314,6 +314,11 @@ class Product extends Sql
             if(is_uploaded_file($_FILES["picture"]["tmp_name"])){
                 $fileName = uniqid("product_", true) . "_" . $_FILES["picture"]["name"];
                 $tmp_name = "Public/img/product/" . $fileName;
+                
+                if (!file_exists('Public/img/product')) {
+                    mkdir('Public/img/product', 0777, true);
+                }
+                
                 move_uploaded_file($_FILES["picture"]["tmp_name"], $tmp_name);
 
                 if (!empty($actual_product)) {

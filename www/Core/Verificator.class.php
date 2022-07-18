@@ -15,10 +15,10 @@ class Verificator
             if (hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
                   //
             } else {
-                die("Tentative de hack CSRF !!!!");
+                die("Tentative de hack CSRF  (pas le même csrf)!!!!");
             }
         }else{
-            die("Tentative de hack CSRF !!!!");
+            die("Tentative de hack CSRF  (pas de csrf) !!!!");
         }
 
         if( count($data) != count($config['inputs'])+1){
@@ -140,12 +140,21 @@ class Verificator
 
     public static function secureString($string)
     {
-        //htmlspecialchars && addslashes
+            //htmlspecialchars && addslashes
+            $string = htmlspecialchars($string);
+            return addslashes($string);
     }
     
-    public static function secureInt($int)
+    public static function checkIfInt($int)
     {
         // is numeric && is int
+        if(is_numeric($int) && !empty($int)){
+            preg_match('/[0-9]*/', $int, $output_array);
+            return $output_array[0];
+        }else{
+            return false;
+        }
+
     }
 
 }

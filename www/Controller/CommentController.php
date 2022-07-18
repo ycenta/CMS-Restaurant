@@ -104,36 +104,59 @@ class CommentController
     {
         $comment = new CommentModel();
 
-        if(!empty($_POST)){
-            print_r($_POST);
-            $result = Verificator::checkForm($comment->getAddCommentForm($_POST['page_id']), $_POST);
+        if(!empty($_POST) && !empty($_POST['page_id'])){
+           
+            if(Verificator::checkIfInt($_POST['page_id'])){
 
-            if(!empty($result)){
-                return "error";
+                $page =  new PageModel();
+                $page =  $page->findById($_POST['page_id']);
+
+                $result = Verificator::checkForm($comment->getAddCommentForm($_POST['page_id']), $_POST);
+                if(!empty($result)){
+                    
+                    if($page){ 
+                        $redirectUrl = $page->getSlug();
+                        header('Location: /readpage?slug='.$redirectUrl);
+                    }else{
+                        header('Location: /');
+                    }
+                }
+
+                if(!empty($_POST['content'])){
+
+    
+                    if($page){   //Verifier si la page existe avant
+
+                        $comment->setIdPage($_POST['page_id']);
+                        $comment->setIdUser($_SESSION['auth']);
+                        //Rajouter verif si vide    
+                        $comment->setContent(Verificator::secureString($_POST['content']));
+                        $comment->setVerified(0);
+                        $comment->setReported(0);
+                        $comment->save();
+                        $redirectUrl = $page->getSlug();
+                        header('Location: /readpage?slug='.$redirectUrl);
+                    }else{
+                        header('Location: /');
+                        echo "redirige vers /";
+                    }
+
+                }else{
+
+                    if($page){
+                        $redirectUrl = $page->getSlug();
+                        header('Location: /readpage?slug='.$redirectUrl);
+                    }else{
+                        header('Location: /');
+                    }
+                }
+
+            }else{ //Si l'id n'est pas un chiffre
+                header('Location: /');
             }
-
-            //Verifier si la page existe avant
-            $comment->setIdPage($_POST['page_id']);
-            $comment->setIdUser($_SESSION['auth']);
-            $comment->setContent($_POST['content']);
-            $comment->setVerified(0);
-            $comment->setReported(0);
-            $comment->save();
-
-            $page =  new PageModel();
-            $page =  $page->findById($_POST['page_id']);
-
-            print_r($page);
-            if($page){
-                $redirectUrl = $page->getSlug();
-                header('Location: /readpage?slug='.$redirectUrl);
-            }else{
-                // header('Location: /');
-                echo "redirige vers /";
-            }
-            
-            // echo "redirection to page id: ".$_POST['page_id'];
-
+    
+        }else{
+            header('Location: /');
         }
 
         
@@ -142,14 +165,13 @@ class CommentController
 
     public function reportComment()
     {
-        echo "page report comment <br>";
         $comment = new CommentModel();
+
         if(!empty($_POST)){
             $result = Verificator::checkForm($comment->getReportCommentForm(), $_POST);
             if(empty($result)){
-                echo "formulaire validé <br>";
 
-                if(is_numeric($_POST['comment_id'])){
+                if(Verificator::checkIfInt($_POST['comment_id'])){
                     // $roleSecurity = new RoleSecurity();
                     echo "comment to be reported :".$_POST['comment_id'];
 
@@ -171,12 +193,15 @@ class CommentController
                             //On redirige juste
                             header($redirectUrl.'&?report=fail');
                         }else{
-
                             $comment->setReported();
                             $comment->save();
                             header($redirectUrl.'&?report=sucess');
                         }
+                    }else{
+                        header('Location: /');
                     }                   
+                }else{
+                    header('Location: /');
                 }
 
             }
