@@ -83,13 +83,18 @@ class UserController {
                    if((new UserSecurity())->findByUsermail($_POST['email'])){
                         die("Erreur mail déja utilisé");
                    } 
-                
-                    $user->setUser();
-                    $user->save();
+                   
+                   if(Verificator::checkIfOnlyLetters($_POST['firstname']) && Verificator::checkIfOnlyLetters($_POST['lastname'])){
+                  
+                        $user->setUser();
+                        $user->save();
 
-                    $mailtest = new Mailsender();
-                    $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());
-               
+                        $mailtest = new Mailsender();
+                        $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());
+                        
+                    }else{
+                        echo "Nom ". $_POST['firstname']." - Prenom ".$_POST['lastname']." invalide(s) ";
+                    }
                 }else {
                     echo "Erreur dans le formulaire";
                 }
@@ -102,8 +107,14 @@ class UserController {
     public function activation()
     {
         if(isset($_GET['code']) && !empty($_GET['code'])){
-            $userSecurity = new UserSecurity();
-            echo $userSecurity->validateAccount($_GET['code']); //On check si un compte possède le token
+
+            if(ctype_alnum($_GET['code'])){ //Si le code est en alphanumerique
+                $userSecurity = new UserSecurity();
+                echo $userSecurity->validateAccount($_GET['code']); //On check si un compte possède ce token
+            }else{
+                header('Location: /');
+            }
+           
         }else{
             header('Location: /');
         }
@@ -173,7 +184,7 @@ class UserController {
                         $user->setPassword($_POST["password"]) ;
                         $user->emptyResetToken();
                         $user->save();
-                        echo "Le mot de passe à bien été changé - Redirection";
+                        echo "Le mot de passe à bien été changé";
                     }
                 }
 
@@ -205,10 +216,15 @@ class UserController {
                         //     $user->setEmail($_POST['email']);
                         // }
                         
-                //faire Verificator::secureString($_POST['firstname']) ?
-                $user->setFirstname($_POST['firstname']);
-                $user->setLastname($_POST['lastname']);
-                $user->save();
+                if(Verificator::checkIfOnlyLetters($_POST['firstname']) && Verificator::checkIfOnlyLetters($_POST['lastname'])){
+                    $user->setFirstname($_POST['firstname']);
+                    $user->setLastname($_POST['lastname']);
+                    $user->save();
+                    echo "edited";
+                }else{
+                    echo "Erreur: Lettre uniquement pour le nom & prénom";
+                }
+                
             }
             $view = new View("profil");
             $view->assign("user", $user);

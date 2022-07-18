@@ -157,4 +157,11 @@ class Verificator
 
     }
 
+    public static function checkIfOnlyLetters($name): bool
+    {
+
+        return preg_match("/^([a-zA-Z]+)$/", $name, $match);
+        
+    }
+
 }

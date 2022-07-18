@@ -81,7 +81,9 @@
   controller: user
   action: showprofile
   role:
-    - none
+    - user
+    - editor
+    - admin
 
 /profile-editpassword:
   controller: user
