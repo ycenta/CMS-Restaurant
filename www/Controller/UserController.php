@@ -79,14 +79,19 @@ class UserController {
 
                 $result = Verificator::checkForm($user->getRegisterForm(), $_POST);
                 if (empty($result)) {
-                $user->setUser();
-                $user->save();
+                
+                   if((new UserSecurity())->findByUsermail($_POST['email'])){
+                        die("Erreur mail déja utilisé");
+                   } 
+                
+                    $user->setUser();
+                    $user->save();
 
-                $mailtest = new Mailsender();
-                $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());
-                }
-                else {
-                    echo "Erreur";
+                    $mailtest = new Mailsender();
+                    $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());
+               
+                }else {
+                    echo "Erreur dans le formulaire";
                 }
             
             }
