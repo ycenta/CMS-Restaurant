@@ -27,7 +27,7 @@ class InstallerController {
 
             $result = Verificator::checkForm($user->getInstallerForm(), $_POST);
             if (empty($result)) {
-                // print_r($_POST);
+                print_r($_POST);
                 InstallerController::createDatabase($_POST);
             }
         }    
@@ -43,6 +43,9 @@ class InstallerController {
         $array[] = $db_user =  addslashes(htmlspecialchars($data['db_user'])) ;
         $array[] = $db_password =  addslashes(htmlspecialchars($data['db_password'])) ;
         $array[] = $db_prefix =  addslashes(htmlspecialchars($data['db_prefix']));
+
+
+        $db_prefix =  addslashes(htmlspecialchars($data['db_prefix']));
 
         $rootuser_db = 'root';
         $rootpwd_db = 'password';
@@ -239,10 +242,29 @@ class InstallerController {
                     header("Location: /installer?error=createtables");
                     exit();
                 }
-            echo "<br>resultat création tables :".$responsecreatetable;
+            echo "<br>resultat création tables :".$responsecreatetable; 
    
             echo "<br><br><br><br><br><br><br><br><br><br><br>";
             // echo $tablesql;
+
+            $fileContent = '
+            <?php
+                  define("DBUSER", "'.$db_user.'");
+                  define("DBPWD", "'.$db_password.'");
+                  define("DBHOST", "'.$db_host.'");
+                  define("DBNAME", "'.$db_name.'");
+                  define("DBPORT", "'.$db_port.'");
+                  define("DBDRIVER", "'.$db_driver.'");
+                  define("DBPREFIXE", "'.$db_prefix.'");
+
+                  define("HOSTMAIL", "'.$hostmail.'");
+                  define("MAILUSERNAME ", "'.$mailusername.'");
+                  define("MAILPWD", "'.$mailpassword.'");
+                  define("SETMAIL", "'.$setmail.'Q");
+                  define("SITENAME", "'.$sitename.'");
+
+                  ';
+            file_put_contents('confdeux.inc.php',$fileContent);
 
             }catch (\Exception $e){
                 die("Erreur SQL : ".$e->getMessage());
