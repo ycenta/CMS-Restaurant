@@ -3,6 +3,8 @@
 CREATE TABLE `esgi_checkout` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
+  `createdAt` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `updatedAt` timestamp on update CURRENT_TIMESTAMP NULL,
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `esgi_checkout_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `esgi_user` (`id`)

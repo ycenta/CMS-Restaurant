@@ -1,73 +1,8 @@
-<?php
-
-namespace App\Controller;
-
-use App\Core\View;
-use App\Core\Auth;
-use App\Model\User as UserModel;
-use App\Core\Verificator;
-
-
-class InstallerController {
-
-    protected $pdo;
-    
-    public function __construct()
-    {
-       
-    }
-
-    public function initproject(){
-        $user = new UserModel();
-
-        $view = new View("installer/init");
-        $view->assign("user", $user);
-
-        if( !empty($_POST)){
-
-            $result = Verificator::checkForm($user->getInstallerForm(), $_POST);
-            if (empty($result)) {
-                // print_r($_POST);
-                InstallerController::createDatabase($_POST);
-            }
-        }    
-    }
-
-    public static function createDatabase($data){
-
-        $array = [];
-        $array[] = $db_name =  addslashes(htmlspecialchars($data['db_name']));
-        $array[] = $db_host =  addslashes(htmlspecialchars($data['db_host']));
-        $array[] = $db_port = $data['db_port']; //Verificator checkIfInt peut-etre?
-        $array[] = $db_driver =  'mysql'; 
-        $array[] = $db_user =  addslashes(htmlspecialchars($data['db_user'])) ;
-        $array[] = $db_password =  addslashes(htmlspecialchars($data['db_password'])) ;
-        $array[] = $db_prefix =  addslashes(htmlspecialchars($data['db_prefix']));
-
-        $rootuser_db = 'root';
-        $rootpwd_db = 'password';
-
-        // try{
-        //     $pdo = new \PDO( $db_driver.":host=".$db_host.";port=".$db_port.";dbname=".$db_name
-        //         ,$rootuser_db, $rootpwd_db , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
-        // }catch (\Exception $e){
-        //     die("Erreur SQL : ".$e->getMessage());
-        // }
-
-            try{
-                //changer le host et le port par les variables du formulaire 
-                $pdo = new \PDO("mysql:host=database;port=3306", $rootuser_db, $rootpwd_db);
-                echo "insertion de  la table $db_name V";
-                $requestsql=  "CREATE DATABASE `$db_name`;";
-
-                $response = $pdo->exec($requestsql);
-                if ($response === false) {
-                    header("Location: /installer?error=createdatabase");
-                    exit();
-                }
-                $pdofortables = new \PDO("mysql:host=database;port=3306;dbname=".$db_name, $rootuser_db, $rootpwd_db);
-
-                $tablesql = "
+-- MySQL dump 10.13  Distrib 5.7.35, for Win64 (x86_64)
+                --
+                -- Host: localhost    Database: projet
+                -- ------------------------------------------------------
+                -- Server version	5.7.38
                 
                 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
                 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -231,26 +166,3 @@ class InstallerController {
                 LOCK TABLES  `".$db_prefix."user` WRITE;
                 
                 UNLOCK TABLES;
-            ";
-
-            $responsecreatetable = $pdofortables->exec($tablesql);
-
-                if ($responsecreatetable === false) {
-                    header("Location: /installer?error=createtables");
-                    exit();
-                }
-            echo "<br>resultat création tables :".$responsecreatetable;
-   
-            echo "<br><br><br><br><br><br><br><br><br><br><br>";
-            // echo $tablesql;
-
-            }catch (\Exception $e){
-                die("Erreur SQL : ".$e->getMessage());
-            }
-
-        // $pdo
-
-        
-    }
-
-}
