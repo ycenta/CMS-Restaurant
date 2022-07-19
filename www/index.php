@@ -2,7 +2,18 @@
 
 namespace App;
 session_start();
-require "conf.inc.php";
+
+if(!file_exists('conf.inc.php') && $_SERVER["REQUEST_URI"] !="/installer" ){
+
+    header("Location: /installer");
+    die();
+}elseif(!file_exists('conf.inc.php')){
+
+}else{
+    require 'conf.inc.php';
+}
+
+
 
 if (empty($_SESSION['csrf'])) { //csrf par session
     $_SESSION['csrf'] = bin2hex(random_bytes(32));
@@ -22,7 +33,9 @@ spl_autoload_register("App\myAutoloader");
 
 use App\Core\Middleware;
 
-Middleware::start();
+if($_SERVER["REQUEST_URI"] !="/installer"){
+    Middleware::start();
+}
 
 
 //Réussir à récupérer l'URI

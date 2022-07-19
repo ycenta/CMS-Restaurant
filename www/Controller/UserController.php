@@ -272,8 +272,8 @@ class UserController {
     {
         echo "page d'envoi mail<br>";
         
-        $mailtest = new Mailsender();
-        $mailtest->sendMail('register',"yohan@mailexemple.com","yohan","https://google.com");
+        // $mailtest = new Mailsender();
+        // $mailtest->sendMail('register',"yohan@mailexemple.com","yohan","https://google.com");
         // sendMail($template, $email, $name, $url = null, $data = null) 
 
     }

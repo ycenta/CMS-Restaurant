@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Core\View;
 use App\Core\Auth;
 use App\Model\User as UserModel;
+use App\Model\Installer as InstallerModel;
+
 use App\Core\Verificator;
 
 
@@ -18,16 +20,16 @@ class InstallerController {
     }
 
     public function initproject(){
-        $user = new UserModel();
-
+        $installer = new InstallerModel();
+        
         $view = new View("installer/init");
-        $view->assign("user", $user);
+        $view->assign("installer", $installer);
 
         if( !empty($_POST)){
 
-            $result = Verificator::checkForm($user->getInstallerForm(), $_POST);
+            $result = Verificator::checkForm($installer->getInstallerForm(), $_POST);
             if (empty($result)) {
-                print_r($_POST);
+                // print_r($_POST);
                 InstallerController::createDatabase($_POST);
             }
         }    
@@ -36,31 +38,30 @@ class InstallerController {
     public static function createDatabase($data){
 
         $array = [];
-        $array[] = $db_name =  addslashes(htmlspecialchars($data['db_name']));
-        $array[] = $db_host =  addslashes(htmlspecialchars($data['db_host']));
+        $array[] = $db_name =  htmlspecialchars($data['db_name']);
+        $array[] = $db_host =  htmlspecialchars($data['db_host']);
         $array[] = $db_port = $data['db_port']; //Verificator checkIfInt peut-etre?
         $array[] = $db_driver =  'mysql'; 
-        $array[] = $db_user =  addslashes(htmlspecialchars($data['db_user'])) ;
-        $array[] = $db_password =  addslashes(htmlspecialchars($data['db_password'])) ;
-        $array[] = $db_prefix =  addslashes(htmlspecialchars($data['db_prefix']));
+        $array[] = $db_user =  htmlspecialchars($data['db_user']) ;
+        $array[] = $db_password =  htmlspecialchars($data['db_password']) ;
+        $array[] = $db_prefix =  htmlspecialchars($data['db_prefix']);
+
+        $hostmail = $data['hostmail'];
+        $mailusername =  $data['mailusername'];
+        $mailpassword =  $data['mailpassword'];
+        $setmail =  $data['setmail'];
+        $sitename =  $data['sitename'];
 
 
-        $db_prefix =  addslashes(htmlspecialchars($data['db_prefix']));
+        $db_prefix =  htmlspecialchars($data['db_prefix']);
 
         $rootuser_db = 'root';
         $rootpwd_db = 'password';
 
-        // try{
-        //     $pdo = new \PDO( $db_driver.":host=".$db_host.";port=".$db_port.";dbname=".$db_name
-        //         ,$rootuser_db, $rootpwd_db , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
-        // }catch (\Exception $e){
-        //     die("Erreur SQL : ".$e->getMessage());
-        // }
-
             try{
                 //changer le host et le port par les variables du formulaire 
                 $pdo = new \PDO("mysql:host=database;port=3306", $rootuser_db, $rootpwd_db);
-                echo "insertion de  la table $db_name V";
+                echo "insertion de  la table $db_name V<br>";
                 $requestsql=  "CREATE DATABASE `$db_name`;";
 
                 $response = $pdo->exec($requestsql);
@@ -68,6 +69,20 @@ class InstallerController {
                     header("Location: /installer?error=createdatabase");
                     exit();
                 }
+                // $usersql = "CREATE USER '$db_user'@'%' IDENTIFIED BY '$db_password';
+                // GRANT ALL PRIVILEGES ON $db_name.* TO '$db_user'@'%';";  
+
+              $usersql = "CREATE USER '$db_user'@'%' IDENTIFIED WITH mysql_native_password BY '$db_password' ; GRANT USAGE ON *.* TO '$db_user'@'%'; GRANT ALL PRIVILEGES ON `$db_name`.* TO '$db_user'@'%';";
+
+              $responseuser = $pdo->exec($usersql);
+              if ($responseuser === false) {
+                header("Location: /installer?error=createuser");
+                exit();
+            }
+              echo "insertion user:".$responseuser;
+              echo "<br>";
+
+
                 $pdofortables = new \PDO("mysql:host=database;port=3306;dbname=".$db_name, $rootuser_db, $rootpwd_db);
 
                 $tablesql = "
@@ -217,6 +232,7 @@ class InstallerController {
                   `firstname` varchar(50) DEFAULT NULL,
                   `lastname` varchar(100) DEFAULT NULL,
                   `status` tinyint(4) NOT NULL DEFAULT '0',
+                  `is_superadmin` tinyint(4) NOT NULL DEFAULT '0',
                   `id_role` int(11) DEFAULT NULL,
                   `token` char(255) DEFAULT NULL,
                   `reset_token` char(255) DEFAULT NULL,
@@ -258,13 +274,13 @@ class InstallerController {
                   define("DBPREFIXE", "'.$db_prefix.'");
 
                   define("HOSTMAIL", "'.$hostmail.'");
-                  define("MAILUSERNAME ", "'.$mailusername.'");
+                  define("MAILUSERNAME", "'.$mailusername.'");
                   define("MAILPWD", "'.$mailpassword.'");
-                  define("SETMAIL", "'.$setmail.'Q");
+                  define("SETMAIL", "'.$setmail.'");
                   define("SITENAME", "'.$sitename.'");
 
                   ';
-            file_put_contents('confdeux.inc.php',$fileContent);
+            file_put_contents('conf.inc.php',$fileContent);
 
             }catch (\Exception $e){
                 die("Erreur SQL : ".$e->getMessage());
