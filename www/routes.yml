@@ -253,3 +253,9 @@
   action: initproject
   role:
     - none
+    
+/showallproducts:
+  controller: frontproduct
+  action: showAllProduct
+  role:
+    - none
