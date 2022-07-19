@@ -247,3 +247,9 @@
   action: showAllCheckout
   role:
     - admin
+
+/installer:
+  controller: installer
+  action: initproject
+  role:
+    - none

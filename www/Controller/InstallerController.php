@@ -15,4 +15,11 @@ class InstallerController {
        
     }
 
+    public  function initproject(){
+        $user = new UserModel();
+
+        $view = new View("installer/init");
+        $view->assign("user", $user);
+    }
+
 }
