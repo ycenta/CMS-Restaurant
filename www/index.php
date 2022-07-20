@@ -11,6 +11,9 @@ if(!file_exists('conf.inc.php') && $_SERVER["REQUEST_URI"] !="/installer" ){
 
 }else{
     require 'conf.inc.php';
+    if($_SERVER["REQUEST_URI"] =="/installer"){
+        header("Location: /");
+    }
 }
 
 
