@@ -151,11 +151,16 @@ class ProductController {
 
             if(empty($result)){
 
-                $product = $product->findById($_POST['product_id']);
-        
-                if($product){
-                    $_SESSION['cart'][] = $_POST['product_id'];
-                    header('Location: /pageProduct?id='.$_POST['product_id'].'&?success');
+                if(Verificator::checkIfInt($_POST['product_id'])){
+                    $product = $product->findById($_POST['product_id']);
+                    if($product){
+                        $_SESSION['cart'][] = $_POST['product_id'];
+                        header('Location: /pageProduct?id='.$_POST['product_id'].'&?success');
+                    }else{
+                        header('Location: /');
+                    }
+                }else{
+                    header('Location: /');
                 }
 
             }

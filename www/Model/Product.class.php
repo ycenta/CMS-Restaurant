@@ -245,7 +245,7 @@ class Product extends Sql
             'images'=>[
                 "oldPicture"=>[
                     "type"=>"img",
-                    "from"=>"Public/img/product/",
+                    "from"=>"public/img/product/",
                     "input"=>"picture",
                     "class"=>"inputForm",
                     "id"=>"oldPictureForm",
@@ -254,7 +254,7 @@ class Product extends Sql
             ]
         ];
     }
-
+    //
     public function getRemoveProductForm(): array
     {
         return [
@@ -313,17 +313,17 @@ class Product extends Sql
         if(isset($_FILES["picture"]) && $_FILES["picture"]['error'] != 4){
             if(is_uploaded_file($_FILES["picture"]["tmp_name"])){
                 $fileName = uniqid("product_", true) . "_" . $_FILES["picture"]["name"];
-                $tmp_name = "Public/img/product/" . $fileName;
+                $tmp_name = "public/img/product/" . $fileName;
                 
-                if (!file_exists('Public/img/product')) {
-                    mkdir('Public/img/product', 0777, true);
+                if (!file_exists('public/img/product')) {
+                    mkdir('public/img/product', 0777, true);
                 }
                 
                 move_uploaded_file($_FILES["picture"]["tmp_name"], $tmp_name);
 
                 if (!empty($actual_product)) {
-                    if(file_exists("Public/img/product/" . $actual_product->getPicture())){
-                        unlink("Public/img/product/" . $actual_product->getPicture());
+                    if(file_exists("public/img/product/" . $actual_product->getPicture())){
+                        unlink("public/img/product/" . $actual_product->getPicture());
                     }
                 }
 
