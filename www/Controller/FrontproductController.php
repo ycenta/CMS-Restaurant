@@ -28,9 +28,9 @@ class FrontproductController
             $currentPage = 1;
         }
 
-        $quantity = intval($checkout->getAmountRows()['quantity']);
+        $quantity = intval($product->getAmountRows()['quantity']);
         $interval = 5;
-        $checkouts = $checkout->getAllLimit(($currentPage * $interval) - $interval, $interval);
+        $products = $product->getAllLimit(($currentPage * $interval) - $interval, $interval);
 
         $view = new View('front/list');
         $view->assign("products", $products);

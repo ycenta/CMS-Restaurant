@@ -93,7 +93,7 @@ class Page extends Sql
 
     public function getAllPages()
     {
-        $sql = "SELECT * FROM esgi_page";
+        $sql = "SELECT * FROM ".DBPREFIXE."page";
         $query = $this->pdo->prepare($sql);
         $query->execute();
         $pages = $query->fetchAll(\PDO::FETCH_CLASS, get_called_class());
@@ -101,7 +101,7 @@ class Page extends Sql
     }
     public function selectBySlug($slug)
     { 
-            $sql = "SELECT * FROM esgi_page WHERE slug = :slug";
+            $sql = "SELECT * FROM ".DBPREFIXE."page WHERE slug = :slug";
             $query = $this->pdo->prepare($sql);
             $query->execute(['slug' => $slug]);
             $page = $query->fetchObject(get_called_class());
@@ -153,6 +153,46 @@ class Page extends Sql
                     "required"=>true,
                     "class"=>"inputForm",
                     "id"=>"contentForm",
+                    "error"=>"Ton contenue est bizarre",
+                ],
+            ]
+        ];
+    }
+
+    public function getEditForm(): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "create"=>"Edit une page"
+            ],
+            'inputs'=>[
+                "name"=>[
+                    "type"=>"text",
+                    "placeholder"=>"nom de la page ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"nameForm",
+                    "value"=>$this->getName(),
+                    "error"=>"Nom incorrect",
+                ],
+                "title"=>[
+                    "type"=>"title",
+                    "placeholder"=>"titre : ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"titleForm",
+                    "value" => $this->getTitle(),
+                    "error"=>"Votre titre est bizarre",
+                    ],
+                "content"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Contenu ...",
+                    "required"=>true,
+                    "class"=>"inputForm",
+                    "id"=>"contentForm",
+                    "value" => $this->getContent(),
                     "error"=>"Ton contenue est bizarre",
                 ],
             ]

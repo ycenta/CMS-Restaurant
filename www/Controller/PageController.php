@@ -90,7 +90,7 @@ class PageController {
         $page = $page->selectBySlug($_GET["slug"]);
         if( !empty($_POST)){
 
-            $result = Verificator::checkForm($page->getCreationForm(), $_POST);
+            $result = Verificator::checkForm($page->getEditForm(), $_POST);
             if(!empty($result)){
                 return ("Error");
             }
