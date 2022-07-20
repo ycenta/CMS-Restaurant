@@ -74,7 +74,7 @@ class ProductController {
                         $product = $productSecurity->findById($_POST['product_id']);
 
                         if($userRole == 'admin'){ //Si l'utilisateur connecté est un admin, alors on accepte la suppression
-                            $picture = "Public/img/product/" . $product->getPicture();
+                            $picture = "public/img/product/" . $product->getPicture();
                             if($product->delete($_POST['product_id'])){
                                 if(file_exists($picture)) {
                                     unlink($picture);
