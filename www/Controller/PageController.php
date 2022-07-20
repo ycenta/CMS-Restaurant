@@ -7,6 +7,7 @@ use App\Model\Page;
 use App\Core\View;
 use App\Core\Verificator;
 use App\Model\Comment as CommentModel;
+use App\Security\UserSecurity;
 
 
 
@@ -67,6 +68,7 @@ class PageController {
     {
 
         $page = new Page();
+        $userSecurity = new UserSecurity();
         $page = $page->selectBySlug($_GET["slug"]);
         if($page){
             $comment = new CommentModel();
@@ -76,6 +78,7 @@ class PageController {
             $view->assign("page", $page);          
             $view->assign("comment", $comment);
             $view->assign("comments", $comments);
+            $view->assign('userSecurity',$userSecurity);
 
         }else{
             die('error 404');

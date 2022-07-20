@@ -100,5 +100,16 @@ class UserSecurity extends Sql
         }
     }
 
+    public function getUserNameById(int $id)
+    {
+        $result = $this->findById($id);
+
+        if($result){
+            return $result->getEmail();
+        }else{
+            return 'user';
+        }
+    }
+
 
 }

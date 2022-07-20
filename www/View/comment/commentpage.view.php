@@ -2,7 +2,7 @@
 <ul>
     <?php foreach ($comments as $comment): ?>
         <?php if($comment->getVerified() === 1): ?>
-        <li><p>Utilisateur: <?= $comment->getIdUser() ;?></p>
+        <li><p>Utilisateur: <?= $userSecurity->getUserNameById($comment->getIdUser()) ;?></p>
             <span><?= stripslashes($comment->getContent())?> <div id="signaler" style="display:inline-block" ><?= $this->includePartial("form", $comment->getReportCommentForm()) ?></div></span>         
         </li>
     <?php endif; ?>
