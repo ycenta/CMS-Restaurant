@@ -13,6 +13,33 @@
                 </li>
             <?php endforeach; ?>
         </ul>
+        <?php
+        if($pages_amount > 1){
+        ?>
+            <nav>
+                <ul class="pagination">
+                    <?php
+                    if($currentPage != 1){
+                    ?>
+                        <li><a href="/list?page=<?= $currentPage - 1 ?>">Précédent</a></li>
+                    <?php
+                    }
+                    for($i = 1;$i<=$pages_amount;$i++):
+                    ?>
+                        <li><a href="./list?page=<?= $i ?>"><?= $i ?></a></li>
+                    <?php
+                    endfor;
+                    if($currentPage != $pages_amount){
+                    ?>
+                        <li><a href="./list?page=<?= $currentPage + 1 ?>">Suivant</a></li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+            </nav>
+        <?php
+        }
+        ?>
         <a href="/newpage">Create a new page</a>  
     </body>
 </html>

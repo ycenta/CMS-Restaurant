@@ -23,7 +23,7 @@
                             <h3>Id : <?= $product->getId()?></h3>
                             <span> <?= $product->getName(); ?> </span>
                             <br>
-                             <img style="width:100px;height:100px" src="Public/img/product/<?= $product->getPicture(); ?>" alt="<?= $product->getName(); ?>"> 
+                             <img style="width:100px;height:100px" src="public/img/product/<?= $product->getPicture(); ?>" alt="<?= $product->getName(); ?>"> 
                             <p> <?= $product->getDescription(); ?> </p>
                             <span> Prix : <?= $product->getPrice(); ?> €</span>
                             <br>
@@ -36,6 +36,33 @@
                         <br>
                     <?php endforeach; ?>
                 </ul>
+                <?php
+                if($pages > 1){
+                ?>
+                    <nav>
+                        <ul class="pagination">
+                            <?php
+                            if($currentPage != 1){
+                            ?>
+                                <li><a href="/products?page=<?= $currentPage - 1 ?>">Précédent</a></li>
+                            <?php
+                            }
+                            for($i = 1;$i<=$pages;$i++):
+                            ?>
+                                <li><a href="./products?page=<?= $i ?>"><?= $i ?></a></li>
+                            <?php
+                            endfor;
+                            if($currentPage != $pages){
+                            ?>
+                                <li><a href="./products?page=<?= $currentPage + 1 ?>">Suivant</a></li>
+                            <?php
+                            }
+                            ?>
+                        </ul>
+                    </nav>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </body>

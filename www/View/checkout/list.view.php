@@ -31,7 +31,7 @@
 
                                 $product = $product->findById($checkout_product->getIdProduct());
                         ?>
-                               <div style="margin-left: 30px;">Produit : <?= $product->getName(); ?> <img style="width:80px;height:80px" src="Public/img/product/<?= $product->getPicture(); ?>" alt="<?= $product->getName(); ?>"> </div>
+                               <div style="margin-left: 30px;">Produit : <?= $product->getName(); ?> <img style="width:80px;height:80px" src="public/img/product/<?= $product->getPicture(); ?>" alt="<?= $product->getName(); ?>"> </div>
 
                         <?php   endforeach;
                                 $checkout_products = $emptyCheckout_Products;
@@ -42,6 +42,33 @@
                 </li>
                 <br>
             <?php endforeach; ?>
+            <?php
+            if($pages > 1){
+            ?>
+                <nav>
+                    <ul class="pagination">
+                        <?php
+                        if($currentPage != 1){
+                        ?>
+                            <li><a href="/checkouts?page=<?= $currentPage - 1 ?>">Précédent</a></li>
+                        <?php
+                        }
+                        for($i = 1;$i<=$pages;$i++):
+                        ?>
+                            <li><a href="./checkouts?page=<?= $i ?>"><?= $i ?></a></li>
+                        <?php
+                        endfor;
+                        if($currentPage != $pages){
+                        ?>
+                            <li><a href="./checkouts?page=<?= $currentPage + 1 ?>">Suivant</a></li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </nav>
+            <?php
+            }
+            ?>
         </div>
     </div>
     </body>

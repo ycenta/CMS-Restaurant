@@ -14,9 +14,25 @@ class PageController {
 
     public function displayAllPages() {
         $cequetuveux = new Page();
-        $pages = $cequetuveux->getAllPages();
+
+        if(isset($_GET['page']) && !empty($_GET['page'])){
+            $currentPage = intval(strip_tags(htmlspecialchars($_GET['page'])));
+            
+            if($currentPage == 0){
+                $currentPage = 1;
+            }
+        }else{
+            $currentPage = 1;
+        }
+
+        $quantity = intval($cequetuveux->getAmountRows()['quantity']);
+        $interval = 5;
+        $pages = $cequetuveux->getAllLimit(($currentPage * $interval) - $interval, $interval);
+
         $view = new View('page/list');
         $view->assign('pages', $pages);
+        $view->assign("currentPage", $currentPage);
+        $view->assign("pages_amount", ceil($quantity/$interval));
     }
 
     public function newPage() 
