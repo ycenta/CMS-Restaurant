@@ -1,6 +1,8 @@
 <?php
 namespace App\Model;
-
+/**
+ * Singleton class Log
+ */
 class Log {
 
 	private static $instance = null;
