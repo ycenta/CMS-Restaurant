@@ -7,6 +7,7 @@ use App\Model\Page;
 use App\Core\View;
 use App\Core\Verificator;
 use App\Model\Comment as CommentModel;
+use App\Model\Log;
 use App\Security\UserSecurity;
 
 
@@ -38,6 +39,7 @@ class PageController {
 
     public function newPage() 
     {
+        $log = Log::getInstance();
         
         $page = new Page();
         
@@ -55,7 +57,7 @@ class PageController {
             echo $page->getSlug();
             $page->save();
 
-
+            $log->create('page', $_SESSION['email'], $page->getName());
         }
         $view = new View("Page/new", "back");
         $view->assign("page", $page);
