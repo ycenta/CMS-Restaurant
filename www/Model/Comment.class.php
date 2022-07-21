@@ -14,6 +14,7 @@ class Comment extends Sql
     protected $createdAt;
     protected $updatedAt;
     protected $reported;
+    protected $suscribedAdmins = [];
 
     public function __construct()
     {
@@ -247,6 +248,18 @@ class Comment extends Sql
        $result = $this->findByCustom("id",$id);
       
       return $result;
+    }
+
+    public function subscribe(UserModel $user)
+    {
+        $this->suscribedAdmins[ $user->getId() ] = $user;
+    }
+
+    public function notify()
+    {
+        foreach ($this->suscribedAdmins as $user){
+            $user->update($this);
+        }
     }
 
 }

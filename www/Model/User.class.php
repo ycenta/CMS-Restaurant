@@ -3,6 +3,10 @@ namespace App\Model;
 
 use App\Core\Sql;
 use App\Core\QueryBuilder;
+use App\Model\Comment as CommentModel;
+use App\Core\Mailsender;
+
+
 
 class User extends Sql
 {
@@ -684,6 +688,19 @@ class User extends Sql
             ]
         ];
     }
+
+    public function getAllAdmins()
+    {
+        $users = $this->getAllWhere(['id','email'],['role_id', 3]);
+        return $users;
+    }
  
+
+    public function update(CommentModel $comment) 
+    {
+        $mailtest = new Mailsender();
+        $mailtest->sendsimple($user->getEmail(),"Le commentaire suivant viens d'être signalé : ".$comment->getContent());
+
+    }
 
 }

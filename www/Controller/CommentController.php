@@ -6,6 +6,8 @@ use App\Model\Comment as CommentModel;
 use App\Core\View;
 use App\Core\Verificator;
 use App\Model\Page as PageModel;
+use App\Model\User as UserModel;
+
 
 
 
@@ -195,6 +197,16 @@ class CommentController
                         }else{
                             $comment->setReported();
                             $comment->save();
+
+                            $admin = new UserModel;
+                            $admins = $user->getAllAdmins();
+
+                            foreach($admins as $admin){
+                                $comment->subscribe($admin);
+                            }
+
+                            $comment->notify();
+
                             header($redirectUrl.'&?report=sucess');
                         }
                     }else{

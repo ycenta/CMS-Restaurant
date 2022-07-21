@@ -75,6 +75,13 @@ class Mailsender
 
     }
   
+    public function sendsimple($email,$content)
+    {
+        $this->mail->addAddress($email);      
+        $this->mail->isHTML(true);
+        $this->mail->Body = $content;
+        $this->mail->send();
+    }
 
 
 }
