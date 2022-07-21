@@ -5,6 +5,7 @@ namespace App\core;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
+use App\Model\Log;
 
 require 'lib/PHPMailer/src/Exception.php';
 require 'lib/PHPMailer/src/PHPMailer.php';
@@ -44,6 +45,7 @@ class Mailsender
     {
 
         try {
+            $log = Log::getInstance();
            
             $this->mail->addAddress($email);      
             $this->mail->isHTML(true);      
@@ -68,6 +70,8 @@ class Mailsender
             $this->mail->send();
 
             echo 'Message has been sent';
+
+            $log->user("email", $email);
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {mail->ErrorInfo}";
         }

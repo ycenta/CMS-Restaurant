@@ -6,6 +6,7 @@ use App\Core\Sql;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Model\Category as CategoryModel;
+use App\Model\Log;
 use App\Security\CategorySecurity;
 use App\Security\RoleSecurity;
 
@@ -14,6 +15,8 @@ class CategoryController {
 
     public function registerCategory()
     {
+        $log = Log::getInstance();
+
         $category = new CategoryModel();
 
         $view = new View("Category/register");
@@ -27,6 +30,8 @@ class CategoryController {
                 $category->setCategory();
                 $category->save();
                 echo "<br>Catégorie enregistrée";
+
+                $log->create('category', $_SESSION['email'], $category->getName());
             } else {
                 var_dump($result);
             }    

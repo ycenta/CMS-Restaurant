@@ -7,7 +7,7 @@ use App\Core\Verificator;
 use App\Core\View;
 use App\Model\Checkout as CheckoutModel;
 use App\Model\User as UserModel;
-
+use App\Model\Log;
 use App\Model\Product as ProductModel;
 use App\Model\Checkout_Product as CheckoutProductModel;
 use App\Security\ProductSecurity;
@@ -19,6 +19,8 @@ class CheckoutController {
     public function generateCheckout()
     {
         if(!empty($_POST)){
+            $log = Log::getInstance();
+
             //Rajouter verification si le panier est vide, alors rien faire
             $checkout = new CheckoutModel();
            
@@ -43,6 +45,9 @@ class CheckoutController {
             echo "Panier payé !";
             //Rajouter verif si tous les produits on été bien été insert
             $_SESSION['cart'] = [];
+
+            $log->checkout('new', $_SESSION['email'], $checkout->getLastInsertId());
+
             header('Location: /shoppingCart?success=true');
 
         }else{
