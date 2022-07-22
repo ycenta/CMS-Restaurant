@@ -5,9 +5,10 @@ use App\Core\CleanWords;
 use App\Core\Sql;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Core\Context;
+use App\Core\ConcreteStrategyNew;
 use App\Model\Product as ProductModel;
 use App\Model\Checkout as CheckoutModel;
-use App\Model\Log;
 use App\Security\ProductSecurity;
 use App\Security\RoleSecurity;
 
@@ -16,8 +17,6 @@ class ProductController {
 
     public function registerProduct()
     {
-        $log = Log::getInstance();
-
         $product = new ProductModel();
 
         $view = new View("Product/register");
@@ -32,7 +31,8 @@ class ProductController {
                 $product->save();
                 echo "<br>Produit enregistré";
 
-                $log->create('product', $_SESSION['email'], $product->getName());
+                $context = new Context(new ConcreteStrategyNew());
+                $context->executeStrategy('product', $_SESSION['email'], $product->getName());
             } else {
                 var_dump($result);
             }    

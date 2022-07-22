@@ -5,7 +5,8 @@ namespace App\core;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
-use App\Model\Log;
+use App\Core\Context;
+use App\Core\ConcreteStrategyUser;
 
 require 'lib/PHPMailer/src/Exception.php';
 require 'lib/PHPMailer/src/PHPMailer.php';
@@ -45,7 +46,6 @@ class Mailsender
     {
 
         try {
-            $log = Log::getInstance();
            
             $this->mail->addAddress($email);      
             $this->mail->isHTML(true);      
@@ -71,7 +71,8 @@ class Mailsender
 
             echo 'Message has been sent';
 
-            $log->user("email", $email);
+            $context = new Context(new ConcreteStrategyUser());
+            $context->executeStrategy('email sent',$user->getEmail());
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {mail->ErrorInfo}";
         }

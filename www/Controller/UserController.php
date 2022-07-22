@@ -6,6 +6,8 @@ use App\Core\Sql;
 use App\Core\Mailsender;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Core\Context;
+use App\Core\ConcreteStrategyUser;
 use App\Model\User as UserModel;
 use App\Model\Log;
 use App\Security\UserSecurity;
@@ -21,7 +23,6 @@ class UserController {
 
     public function login()
     {
-        $log = Log::getInstance();
         $user = new UserModel();
         $view = new View("Login");
 
@@ -50,7 +51,8 @@ class UserController {
                     $_SESSION['firstname'] = $user->getFirstname();
                     $_SESSION['role'] = $roleSecurity->getRoleNameById($user->getRoleId());
 
-                    $log->user("connect", $user->getEmail());
+                    $context = new Context(new ConcreteStrategyUser());
+                    $context->executeStrategy('connection',$user->getEmail());
 
                     // $_SESSION['role'] = Role::getRoleById($user->getRoleId());
                     // faire une methode UserSecurity->getRoleById?
@@ -73,7 +75,6 @@ class UserController {
 
     public function register()
     {
-        $log = Log::getInstance();
         $user = new UserModel();
 
             $view = new View("register");
@@ -94,7 +95,8 @@ class UserController {
                         $user->setUser();
                         $user->save();
 
-                        $log->user("new", $user->getEmail());
+                        $context = new Context(new ConcreteStrategyUser());
+                        $context->executeStrategy('registered',$user->getEmail());
 
                         $mailtest = new Mailsender();
                         $mailtest->sendMail('register', $user->getEmail(),$user->getFirstname(),"http://localhost/activation?code=".$user->getToken());

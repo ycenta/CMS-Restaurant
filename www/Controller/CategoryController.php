@@ -5,6 +5,8 @@ use App\Core\CleanWords;
 use App\Core\Sql;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Core\Context;
+use App\Core\ConcreteStrategyNew;
 use App\Model\Category as CategoryModel;
 use App\Model\Log;
 use App\Security\CategorySecurity;
@@ -15,8 +17,6 @@ class CategoryController {
 
     public function registerCategory()
     {
-        $log = Log::getInstance();
-
         $category = new CategoryModel();
 
         $view = new View("Category/register");
@@ -31,7 +31,8 @@ class CategoryController {
                 $category->save();
                 echo "<br>Catégorie enregistrée";
 
-                $log->create('category', $_SESSION['email'], $category->getName());
+                $context = new Context(new ConcreteStrategyNew());
+                $context->executeStrategy('category', $_SESSION['email'], $category->getName());
             } else {
                 var_dump($result);
             }    

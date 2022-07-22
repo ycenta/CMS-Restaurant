@@ -6,6 +6,8 @@ use App\Core\Slug;
 use App\Model\Page;
 use App\Core\View;
 use App\Core\Verificator;
+use App\Core\Context;
+use App\Core\ConcreteStrategyNew;
 use App\Model\Comment as CommentModel;
 use App\Model\Log;
 use App\Security\UserSecurity;
@@ -38,9 +40,7 @@ class PageController {
     }
 
     public function newPage() 
-    {
-        $log = Log::getInstance();
-        
+    {   
         $page = new Page();
         
         if( !empty($_POST)){
@@ -57,7 +57,8 @@ class PageController {
             echo $page->getSlug();
             $page->save();
 
-            $log->create('page', $_SESSION['email'], $page->getName());
+            $context = new Context(new ConcreteStrategyNew());
+            $context->executeStrategy('page', $_SESSION['email'], $page->getName());
         }
         $view = new View("Page/new", "back");
         $view->assign("page", $page);
