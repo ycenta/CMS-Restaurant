@@ -10,11 +10,23 @@ Action: reportComment:208</pre>
 
 <h3>QueryBuilder</h3>
 Ajout du querybuilder dans la classe Core/Sql <br>
-<pre>Fichier: Core/Sql.class.php && Core/QueryBuilder.class.php
-Methode: findByCustom():115</pre>
+<pre>Fichier: Core/QueryBuilder.class.php
+Utilisation: Core/Sql.class.php
+  Methodes: 
+  -> findByCustom():115
+  -> getAll():134
+  -> getAllWhere():163
+  -> getAllLimit():213</pre>
 
 
 <h3>Singleton</h3>
-Ajout de log pour les entités Checkout/User <br>
-<pre>Fichier: Model/Log.class.php</pre>
+Ajout de logs pour les entités User, Checkout et Category, Page et Product <br>
+<pre>Fichier: Model/Log.class.php
+Utilisations: 
+-> Controller/CategoryController.php:28, 34
+-> Controller/CheckoutController.php:22, 49
+-> Controller/PageController.php:42, 60
+-> Controller/ProductController.php:19, 35
+-> Controller/UserController.php:24, 53, 76, 97
+-> Core/Mailsender.class.php:48, 74</pre>
 <code>Commit : 7b48d55e1eedcd7822c34a79862e711a9980628f</code>
